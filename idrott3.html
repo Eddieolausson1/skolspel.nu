@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Issäkerhet</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+  background-color: #004e8c;
+  padding: 20px;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #eee;
+  padding: 10px;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+main {
+  background-color: white;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+h2 {
+  color: #004e8c;
+}
+
+p {
+  margin-top: 0;
+}
+
+#question-container {
+  margin-top: 20px;
+}
+
+#options {
+  margin-top: 10px;
+}
+
+.option-btn {
+  display: block;
+  margin-bottom: 5px;
+  padding: 8px;
+  font-size: 16px;
+  width: 200px;
+  cursor: pointer;
+}
+
+.option-btn:hover {
+  background-color: #eee;
+}
+
+.correct {
+  background-color: green;
+  color: white;
+}
+
+.incorrect {
+  background-color: red;
+  color: white;
+}
+
+#result {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#next-question-btn {
+  display: none;
+  margin-top: 10px;
+  background-color: #004e8c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#go-home-btn {
+  display: none;
+  margin-top: 10px;
+  background-color: #004e8c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#score {
+  margin-bottom: 10px;
+}
+ </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Issäkerhet</h1>
+    <p id="score">Poäng: <span id="score-value"></span></p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Issäkerhet</h2>
+    <p>Välj det korrekta svaret på varje fråga om Issäkerhet.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+<script>
+  var questionElement = document.getElementById("question");
+  var optionsElement = document.getElementById("options");
+  var resultElement = document.getElementById("result");
+  var nextQuestionBtn = document.getElementById("next-question-btn");
+  var goHomeBtn = document.getElementById("go-home-btn");
+  var scoreValueElement = document.getElementById("score-value");
+
+var questions = [
+  {
+    question: "Vad är den säkraste tjockleken på isen för att gå på till fots?",
+    options: ["5 cm", "10 cm", "15 cm"],
+    answer: "10 cm"
+  },
+  {
+    question: "Vilken färg används ofta för att markera osäker is?",
+    options: ["Röd", "Blå", "Gul"],
+    answer: "Blå"
+  },
+  {
+    question: "Vad ska du göra om du faller genom isen?",
+    options: ["Stå upp och springa till säkerheten", "Vänd tillbaka och gå där du kom ifrån", "Ligg ner och sprid din vikt över isytan"],
+    answer: "Ligg ner och sprid din vikt över isytan"
+  },
+  {
+    question: "Vilken utrustning bör du bära vid isvandring eller skridskoåkning på osäker is?",
+    options: ["Flytväst", "Hjälm", "Skyddsglasögon"],
+    answer: "Flytväst"
+  },
+  {
+    question: "Hur bör du närma dig is som du inte är säker på?",
+    options: ["Gå rakt över", "Kryp", "Sprid ut din vikt genom att krypa på alla fyra"],
+    answer: "Sprid ut din vikt genom att krypa på alla fyra"
+  },
+  {
+    question: "Vad är en viktig indikator på osäker is?",
+    options: ["Snö på ytan", "Hål i isen", "Fiskare på isen"],
+    answer: "Hål i isen"
+  },
+  {
+    question: "Vilken åtgärd bör du vidta om någon faller genom isen och du är på säker mark?",
+    options: ["Spring snabbt och hjälp till att dra personen upp", "Kasta ett rep och dra personen upp", "Larma räddningstjänsten"],
+    answer: "Larma räddningstjänsten"
+  },
+  {
+    question: "Vad ska du göra om du hör knarrande ljud när du går på isen?",
+    options: ["Spring iväg så fort som möjligt", "Stanna och vänta tills ljudet försvinner", "Kryp på alla fyra och försök att sprida ut din vikt"],
+    answer: "Kryp på alla fyra och försök att sprida ut din vikt"
+  },
+  {
+    question: "Vad bör du undvika när det gäller isbildning och säkerhet?",
+    options: ["Isytor nära land", "Isbildning på stillastående vatten", "Is på djupa sjöar och floder"],
+    answer: "Isbildning på stillastående vatten"
+  },
+  {
+    question: "Hur kan du bedöma isens säkerhet när du är osäker?",
+    options: ["Fråga någon som bor i närheten", "Gå igenom isen försiktigt med en isborr", "Ställ tunga föremål på isen för att testa styrkan"],
+    answer: "Gå igenom isen försiktigt med en isborr"
+  }
+];
+
+
+  var questionCount = 10;
+  var selectedQuestions = getRandomQuestions(questions, questionCount);
+  var currentQuestionIndex = 0;
+  var currentQuestion = selectedQuestions[currentQuestionIndex];
+  var score = 0;
+
+  // Visa den aktuella frågan
+  showQuestion();
+  updateScore();
+
+  // Visa nästa fråga när spelaren klickar på "Nästa fråga"-knappen
+  function nextQuestion() {
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questionCount) {
+      currentQuestion = selectedQuestions[currentQuestionIndex];
+      showQuestion();
+      nextQuestionBtn.style.display = "none";
+      resultElement.textContent = "";
+    } else {
+      endGame();
+    }
+  }
+
+  // Visa den aktuella frågan
+  function showQuestion() {
+    questionElement.textContent = currentQuestion.question;
+    optionsElement.innerHTML = "";
+
+    for (var i = 0; i < currentQuestion.options.length; i++) {
+      var optionBtn = document.createElement("button");
+      optionBtn.classList.add("option-btn");
+      optionBtn.textContent = currentQuestion.options[i];
+      optionBtn.setAttribute("onclick", "checkAnswer(this)");
+      optionsElement.appendChild(optionBtn);
+    }
+  }
+
+  // Kontrollera svaret när spelaren klickar på ett svarsalternativ
+  function checkAnswer(btn) {
+    var playerAnswer = btn.textContent;
+
+    if (playerAnswer === currentQuestion.answer) {
+      btn.classList.add("correct");
+      resultElement.textContent = "Rätt svar!";
+      resultElement.style.color = "green";
+      score++;
+      updateScore();
+    } else {
+      btn.classList.add("incorrect");
+      resultElement.textContent = "Fel svar. Det korrekta svaret var: " + currentQuestion.answer;
+      resultElement.style.color = "red";
+    }
+
+    // Inaktivera alla svarsalternativ
+    var optionButtons = optionsElement.getElementsByClassName("option-btn");
+    for (var i = 0; i < optionButtons.length; i++) {
+      optionButtons[i].disabled = true;
+    }
+
+    nextQuestionBtn.style.display = "block";
+  }
+
+  // Avsluta spelet och visa resultatet
+  function endGame() {
+    questionElement.textContent = "Spelet är klart!";
+    resultElement.textContent = "Du fick " + score + " av " + questionCount + " rätt.";
+    optionsElement.innerHTML = "";
+    nextQuestionBtn.style.display = "none";
+    goHomeBtn.style.display = "block";
+  }
+
+  // Uppdatera poängvärdet
+  function updateScore() {
+    scoreValueElement.textContent = score;
+  }
+
+  // Gå tillbaka till hemskärmen
+  function goHome() {
+    window.location.href = "index.html";
+  }
+
+  // Funktion för att välja slumpmässiga frågor
+  function getRandomQuestions(allQuestions, count) {
+    var randomQuestions = [];
+    var questionIndexes = [];
+    var totalQuestions = allQuestions.length;
+
+    if (count > totalQuestions) {
+      count = totalQuestions;
+    }
+
+    while (questionIndexes.length < count) {
+      var randomIndex = Math.floor(Math.random() * totalQuestions);
+      if (!questionIndexes.includes(randomIndex)) {
+        questionIndexes.push(randomIndex);
+        randomQuestions.push(allQuestions[randomIndex]);
+      }
+    }
+
+    return randomQuestions;
+  }
+</script>
+</body>
+</html>

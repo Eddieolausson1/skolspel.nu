@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wikipedia Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #searchInput {
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #searchResults {
+      margin-top: 20px;
+    }
+
+    .result {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    #pageContent {
+      display: none;
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Wikipedia Search</h1>
+
+<input type="text" id="searchInput" placeholder="Search..." />
+<button onclick="performSearch()">Search</button>
+
+<div id="searchResults"></div>
+
+<div id="pageContent">
+  <h2 id="pageTitle"></h2>
+  <div id="content"></div>
+</div>
+
+<script>
+  function performSearch() {
+    const searchTerm = document.getElementById('searchInput').value;
+    if (searchTerm.trim() === "") {
+      alert("Please enter a search term.");
+      return;
+    }
+
+    // Fetch search results
+    fetch(`https://sv.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchTerm)}&format=json`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error fetching search results: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const searchResults = data.query.search;
+        displaySearchResults(searchResults);
+      })
+      .catch(error => {
+        console.error(error.message);
+        alert(`Error: ${error.message}`);
+      });
+  }
+
+  function displaySearchResults(results) {
+    const searchResultsElement = document.getElementById('searchResults');
+    searchResultsElement.innerHTML = "";
+
+    results.forEach(result => {
+      const resultElement = document.createElement('div');
+      resultElement.classList.add('result');
+      resultElement.innerHTML = `
+        <p>${result.title}</p>
+        <p>${result.snippet}</p>
+        <button onclick="displayPageContent(${result.pageid}, '${result.title}')">Läs mer</button>
+      `;
+      searchResultsElement.appendChild(resultElement);
+    });
+  }
+
+  function displayPageContent(pageId, pageTitle) {
+    window.location.href = `wikicontent.html?pageid=${pageId}&title=${encodeURIComponent(pageTitle)}`;
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Gissa Viktenheternas Namn</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+
+    h2 {
+      color: #004e8c;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    #question-container {
+      margin-top: 20px;
+    }
+
+    #options {
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      cursor: pointer;
+    }
+
+    .option-btn:hover {
+      background-color: #eee;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #next-question-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #score {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Gissa Viktenheternas Namn</h1>
+  </header>
+  <main>
+    <h2>Gissa Viktenheternas Namn</h2>
+    <p>Välj det korrekta svaret på varje fråga om viktenheter.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till startsidan</button>
+    </div>
+  </main>
+  <script>
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    var resultElement = document.getElementById("result");
+    var nextQuestionBtn = document.getElementById("next-question-btn");
+    var goHomeBtn = document.getElementById("go-home-btn");
+
+    var questions = [
+      {
+        question: "Vilket är förkortningen för gram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "g"
+      },
+      {
+        question: "Vilket är förkortningen för kilogram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "kg"
+      },
+      {
+        question: "Vilket är förkortningen för milligram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "mg"
+      },
+      {
+        question: "Vilket är förkortningen för hektogram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "hg"
+      },
+      {
+        question: "Vilket är förkortningen för decigram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "dg"
+      },
+      {
+        question: "Vilket är förkortningen för gram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "g"
+      },
+      {
+        question: "Vilket är förkortningen för kilogram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "kg"
+      },
+      {
+        question: "Vilket är förkortningen för milligram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "mg"
+      },
+      {
+        question: "Vilket är förkortningen för hektogram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "hg"
+      },
+      {
+        question: "Vilket är förkortningen för decigram?",
+        options: ["g", "kg", "mg", "hg", "dg"],
+        answer: "dg"
+      }
+    ];
+
+    var questionCount = 10;
+    var selectedQuestions = getRandomQuestions(questions, questionCount);
+    var currentQuestionIndex = 0;
+    var currentQuestion = selectedQuestions[currentQuestionIndex];
+    var score = 0;
+
+    function startQuiz() {
+      showQuestion();
+    }
+
+    function showQuestion() {
+      questionElement.textContent = currentQuestion.question;
+      optionsElement.innerHTML = "";
+
+      for (var i = 0; i < currentQuestion.options.length; i++) {
+        var optionBtn = document.createElement("button");
+        optionBtn.classList.add("option-btn");
+        optionBtn.textContent = currentQuestion.options[i];
+        optionBtn.setAttribute("onclick", "checkAnswer(this)");
+        optionsElement.appendChild(optionBtn);
+      }
+    }
+
+    function checkAnswer(btn) {
+      var playerAnswer = btn.textContent;
+
+      if (playerAnswer === currentQuestion.answer) {
+        btn.classList.add("correct");
+        resultElement.textContent = "Rätt svar!";
+        resultElement.style.color = "green";
+        score++;
+      } else {
+        btn.classList.add("incorrect");
+        resultElement.textContent = "Fel svar. Det korrekta svaret var: " + currentQuestion.answer;
+        resultElement.style.color = "red";
+      }
+
+      disableOptions();
+      showNextQuestionButton();
+
+      if (currentQuestionIndex === selectedQuestions.length - 1) {
+        showEndGameButton();
+      }
+    }
+
+    function disableOptions() {
+      var optionButtons = optionsElement.getElementsByClassName("option-btn");
+
+      for (var i = 0; i < optionButtons.length; i++) {
+        optionButtons[i].disabled = true;
+      }
+    }
+
+    function showNextQuestionButton() {
+      nextQuestionBtn.style.display = "block";
+    }
+
+    function showEndGameButton() {
+      goHomeBtn.style.display = "block";
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < selectedQuestions.length) {
+        currentQuestion = selectedQuestions[currentQuestionIndex];
+        resetOptions();
+        hideNextQuestionButton();
+        hideResult();
+        showQuestion();
+      }
+    }
+
+    function resetOptions() {
+      var optionButtons = optionsElement.getElementsByClassName("option-btn");
+
+      for (var i = 0; i < optionButtons.length; i++) {
+        optionButtons[i].classList.remove("correct", "incorrect");
+        optionButtons[i].disabled = false;
+      }
+    }
+
+    function hideNextQuestionButton() {
+      nextQuestionBtn.style.display = "none";
+    }
+
+    function hideResult() {
+      resultElement.textContent = "";
+    }
+
+    function goHome() {
+      location.reload();
+    }
+
+    function getRandomQuestions(questions, count) {
+      var shuffled = questions.sort(function () {
+        return 0.5 - Math.random();
+      });
+      return shuffled.slice(0, count);
+    }
+
+    startQuiz();
+  </script>
+</body>
+</html>

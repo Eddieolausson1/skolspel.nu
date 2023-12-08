@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Logga In</title>
+  <meta charset="UTF-8">
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .container h2 {
+      text-align: center;
+    }
+
+    .container input[type="password"] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      border-radius: 4px;
+    }
+
+    .container input[type="radio"] {
+      margin-right: 5px;
+    }
+
+    .container button[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .container button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Logga In Som Lärare Eller Elev</h2>
+    <form onsubmit="return login()">
+      <label for="password">Vänligen skriv din elev/lärar kod:</label>
+      <input type="password" id="password" name="password" required>
+
+      <label for="userType">Användartyp:</label>
+      <input type="radio" id="teacher" name="userType" value="teacher" required>
+      <label for="teacher">Lärare</label>
+      <input type="radio" id="student" name="userType" value="student" required>
+      <label for="student">Elev</label>
+
+      <button type="submit">Logga in</button>
+      <br>
+      <a href="https://info.skolspel.nu/1.html" class="button">Tryck här för att veta hur du får en lärar kod</a>
+      <br><br><a href="https://info.skolspel.nu/2.html" class="button">Tryck här för att veta hur du får en elev kod</a>
+    </form>
+  </div>
+
+  <script>
+    var validTeacherCodes = ["teacher123"]; // Array to store valid teacher codes
+    var validStudentCodes = ["student456"]; // Array to store valid student codes
+
+    function login() {
+      var password = document.getElementById("password").value;
+      var userType = document.querySelector('input[name="userType"]:checked').value;
+
+      // Perform your login validation here based on the user type
+      if (userType === "teacher" && validTeacherCodes.includes(password)) {
+        window.location.href = "larardash.html";
+        return false; // Prevent form submission
+      } else if (userType === "student" && validStudentCodes.includes(password)) {
+        window.location.href = "studentdashboard.html";
+        return false; // Prevent form submission
+      } else {
+        alert("Felaktig kod eller användartyp. Försök igen.");
+        return false; // Prevent form submission
+      }
+    }
+  </script>
+</body>
+</html>

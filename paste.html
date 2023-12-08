@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Laddar...</title>
+  <style>
+    /* Center the loading screen */
+    html, body {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f2f2f2;
+    }
+    
+    /* Add animation to the image */
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    /* Style the image */
+    .spinner {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 6px solid #333;
+      border-top-color: #fff;
+      animation: spin 1s infinite linear;
+    }
+  </style>
+  <script>
+    // Handle page load event
+    window.addEventListener('load', function() {
+      // Calculate the time elapsed since the page started loading
+      var loadTime = new Date().getTime() - performance.timing.navigationStart;
+      
+      // Determine the minimum delay needed before removing the loading screen
+      var minDelay = 1000; // 1 second
+      
+      // Calculate the remaining time to meet the minimum delay
+      var remainingTime = Math.max(0, minDelay - loadTime);
+      
+      // Remove the loading screen after the remaining time
+      setTimeout(function() {
+        document.body.removeChild(document.querySelector('.spinner'));
+        
+        // Redirect to home.html
+        window.location.href = 'home.html';
+      }, remainingTime);
+    });
+  </script>
+</head>
+<body>
+  <img class="spinner" src="logo.png" alt="Loading Spinner">
+
+  <!-- Your additional content here -->
+
+</body>
+</html>

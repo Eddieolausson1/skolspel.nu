@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Skolspel - Hänga Gubbe</title>
+<style>
+   /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  header {
+    background-color: #004e8c;
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header h1 {
+    margin: 0;
+  }
+  
+  #btn-home {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 16px;
+    background-color: #004e8c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  main {
+    background-color: white;
+    padding: 20px;
+    margin-top: 10px;
+  }
+  
+  h2 {
+    color: #004e8c;
+  }
+  
+  #word-container {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  #guess-input {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  #guess-button {
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  #message {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  #reset-button {
+    display: none;
+    margin-top: 10px;
+    background-color: #004e8c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  #attempts {
+    margin-top: 10px;
+  }
+</style>
+
+</head>
+<body>
+<header>
+  <h1>Hänga Gubbe</h1>
+  <a id="btn-home" href="index.html">Gå Till Hemskärmen</a>
+</header>
+  <main>
+  <div class="container">
+    <div id="word-container"></div>
+    <div id="attempts">Försök kvar: <span id="attempts-value"></span></div>
+    <div id="guess">
+      <input type="text" id="guess-input" placeholder="Gissa ett tecken" />
+      <button id="guess-button">Gissa</button>
+    </div>
+    <div id="message"></div>
+    <button id="reset-button">Spela igen</button>
+    <button id="go-home-button" style="display: none;">Gå till hemskärmen</button>
+  </div>
+</main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var wordList = [
+        "BIL", "HUS", "DATORSPEL", "BLÅBÄR", "BOKHYLLA",
+        "KAMERA", "HÖRLURAR", "VITLÖK", "FOTBOLL", "KAKTUS",
+        "MOTOR", "FLYGPLAN", "MÅNE", "VÄLKOMMEN", "SOLSKEN",
+        "SKRIVBORD", "GLASÖGON", "TVÄTTMASKIN", "RADIO", "BIO",
+        "TRÖJA", "SOLGLASÖGON", "PENNA", "BOKSTAV", "KAFFE",
+        "STOL", "HANDDUK", "TELEFON", "TIDNING", "STRAND",
+        "SÄNG", "DATOR", "FJÄRRKONTROLL", "STJÄRNA", "BOK",
+        "NYCKEL", "LÖRDAG", "BLAD", "BLOMMA", "VATTEN",
+        "BRÖD", "FJÄDER", "SPEGEL", "RING", "SNÖ",
+        "HÖGTALARE", "BALLONG", "GLÖDLAMPA", "KLOCKA", "SPEL",
+        "NYHET", "ÖL", "KYCKLING", "BREV", "LÅDA",
+        "PÄRM", "SKYLT", "ÄPPLE", "ANSIKTE", "SJUKHUS",
+        "PARKERING", "VÄG", "KATT", "HUND", "SÅNG",
+        "BRO", "BILJETT", "FISK", "ORM", "FÄRG",
+        "FJÄRRAN", "GRÖNSAK", "VÄSKA", "BUSS", "FLYG",
+        "BORD", "GATA", "SKOG", "BERG", "REKLAM",
+        "DANS", "KLÄDER", "ÖGA", "LÄPP", "BANK",
+        "KVINNA", "TÅG", "FILM", "SYSTER", "BROR",
+        "VÄN", "STAD", "HÖGT", "SÖTT", "RESA",
+        "SPION", "TECKNING", "LÄSK", "MÖBEL", "SIDA"
+      ];
+      
+      var word = '';
+      var wordArray = [];
+      var attempts = 6;
+      var guessedLetters = [];
+      
+      var wordContainer = document.getElementById('word-container');
+      var guessInput = document.getElementById('guess-input');
+      var guessButton = document.getElementById('guess-button');
+      var message = document.getElementById('message');
+      var resetButton = document.getElementById('reset-button');
+      var attemptsValue = document.getElementById('attempts-value');
+      
+      function initGame() {
+        word = getRandomWord(wordList);
+        wordArray = word.split('');
+        attempts = 6;
+        guessedLetters = [];
+        
+        renderWord();
+        renderAttempts();
+        guessInput.value = '';
+        guessInput.disabled = false;
+        guessButton.disabled = false;
+        message.textContent = '';
+        resetButton.style.display = 'none';
+      }
+      
+      function getRandomWord(wordList) {
+        var randomIndex = Math.floor(Math.random() * wordList.length);
+        return wordList[randomIndex];
+      }
+      
+      function renderWord() {
+        var wordDisplay = '';
+        
+        for (var i = 0; i < wordArray.length; i++) {
+          var letter = wordArray[i];
+          var displayLetter = guessedLetters.includes(letter) ? letter : '_';
+          wordDisplay += displayLetter + ' ';
+        }
+        
+        wordContainer.textContent = wordDisplay;
+      }
+      
+      function renderAttempts() {
+        attemptsValue.textContent = attempts;
+      }
+      
+      function makeGuess() {
+        var guess = guessInput.value.toUpperCase();
+        guessInput.value = '';
+        
+        if (guess.length === 1 && /^[A-Z]$/.test(guess)) {
+          if (guessedLetters.includes(guess)) {
+            message.textContent = 'Du har redan gissat bokstaven.';
+          } else {
+            guessedLetters.push(guess);
+            
+            if (wordArray.includes(guess)) {
+              renderWord();
+              checkWin();
+            } else {
+              attempts--;
+              renderAttempts();
+              message.textContent = 'Fel gissning! Försök igen.';
+            }
+          }
+        } else {
+          message.textContent = 'Vänligen ange en giltig bokstav.';
+        }
+        
+        if (attempts === 0) {
+          gameOver();
+        }
+      }
+      
+      function checkWin() {
+        if (!wordContainer.textContent.includes('_')) {
+          message.textContent = 'Grattis! Du har gissat rätt ord.';
+          guessInput.disabled = true;
+          guessButton.disabled = true;
+          resetButton.style.display = 'block';
+        }
+      }
+      
+      function gameOver() {
+        message.textContent = 'Spelet är över. Ordet var "' + word + '".';
+        guessInput.disabled = true;
+        guessButton.disabled = true;
+        resetButton.style.display = 'block';
+      }
+      
+      guessButton.addEventListener('click', makeGuess);
+      resetButton.addEventListener('click', initGame);
+      
+      initGame();
+    });
+  </script>
+  
+</body>
+</html>

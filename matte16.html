@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Gissa Medelhastigheten (km/h)</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    .correct {
+  background-color: green;
+  color: white;
+}
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    
+    /* Header Styles */
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+    }
+    
+    header h1 {
+      margin: 0;
+    }
+    
+    /* Navigation Styles */
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #eee;
+      padding: 10px;
+    }
+    
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    
+    /* Main Styles */
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+    
+    h2 {
+      color: #004e8c;
+    }
+    
+    p {
+      margin-top: 0;
+    }
+    
+    /* Quiz Styles */
+    #question-container {
+      margin-top: 20px;
+    }
+    
+    #options {
+      margin-top: 10px;
+    }
+    
+    .option-btn {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      cursor: pointer;
+    }
+    
+    .option-btn:hover {
+      background-color: #eee;
+    }
+    
+    .correct {
+      background-color: green;
+      color: white;
+    }
+    
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+    
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    
+    #next-question-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    #score {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Gissa Medelhastigheten (km/h)</h1>
+    <p id="score">Poäng: <span id="score-value"></span></p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Gissa Medelhastigheten (km/h)</h2>
+    <p>Välj rätt svar för varje given situation.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Tillbaka till startsidan</button>
+    </div>
+  </main>
+  <script>
+    // Array med frågor och svar
+    var questions = [
+      {
+        question: "Maria gick 3 km första timmen och nästa timme gick hon 5 km. Vad är hennes medelhastighet i km/h?",
+        options: ["3 km/h", "4 km/h", "5 km/h", "8 km/h"],
+        answerIndex: 1
+      },
+      // Lägg till fler frågor här
+      {
+        question: "David cyklade 10 km på 2 timmar. Vad är hans medelhastighet i km/h?",
+        options: ["2 km/h", "5 km/h", "8 km/h", "10 km/h"],
+        answerIndex: 3
+      },
+      {
+        question: "Lisa sprang 7 km på 1.5 timmar. Vad är hennes medelhastighet i km/h?",
+        options: ["3 km/h", "4 km/h", "4.5 km/h", "7 km/h"],
+        answerIndex: 2
+      },
+      {
+        question: "Sara körde 200 km på 4 timmar. Vad är hennes medelhastighet i km/h?",
+        options: ["40 km/h", "50 km/h", "60 km/h", "80 km/h"],
+        answerIndex: 1
+      },
+      {
+        question: "Peter vandrade 15 km på 3 timmar. Vad är hans medelhastighet i km/h?",
+        options: ["3 km/h", "5 km/h", "8 km/h", "15 km/h"],
+        answerIndex: 1
+      },
+      {
+        question: "Emma åkte buss 25 km på 0.5 timmar. Vad är hennes medelhastighet i km/h?",
+        options: ["25 km/h", "30 km/h", "50 km/h", "60 km/h"],
+        answerIndex: 3
+      },
+      {
+        question: "Johan joggade 12 km på 1 timme och 20 minuter. Vad är hans medelhastighet i km/h?",
+        options: ["8 km/h", "9 km/h", "10 km/h", "12 km/h"],
+        answerIndex: 0
+      },
+      {
+        question: "Anna simmade 500 m på 10 minuter. Vad är hennes medelhastighet i km/h?",
+        options: ["1 km/h", "2 km/h", "3 km/h", "5 km/h"],
+        answerIndex: 1
+      },
+      {
+        question: "Erik åkte skidor 20 km på 2 timmar och 30 minuter. Vad är hans medelhastighet i km/h?",
+        options: ["6 km/h", "8 km/h", "10 km/h", "12 km/h"],
+        answerIndex: 2
+      },
+      {
+        question: "Lina gick 6 km första halvtimmen och sedan gick hon 4 km. Vad är hennes medelhastighet i km/h?",
+        options: ["6 km/h", "8 km/h", "10 km/h", "12 km/h"],
+        answerIndex: 2
+      }
+    ];
+
+    var currentQuestionIndex = 0;
+    var score = 0;
+
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    var resultElement = document.getElementById("result");
+    var scoreValueElement = document.getElementById("score-value");
+    var nextQuestionButton = document.getElementById("next-question-btn");
+    var goHomeButton = document.getElementById("go-home-btn");
+
+    // Funktion som körs när sidan laddas
+    function initialize() {
+      scoreValueElement.textContent = score;
+      showQuestion();
+    }
+
+    // Funktion för att visa en fråga och dess svarsalternativ
+    function showQuestion() {
+      var currentQuestion = questions[currentQuestionIndex];
+
+      questionElement.textContent = currentQuestion.question;
+
+      optionsElement.innerHTML = ""; // Rensa tidigare svarsalternativ
+
+      for (var i = 0; i < currentQuestion.options.length; i++) {
+        var optionButton = document.createElement("button");
+        optionButton.textContent = currentQuestion.options[i];
+        optionButton.classList.add("option-btn");
+        optionButton.onclick = checkAnswer.bind(null, i);
+        optionsElement.appendChild(optionButton);
+      }
+
+      resultElement.textContent = "";
+      nextQuestionButton.style.display = "none";
+      goHomeButton.style.display = "none";
+    }
+
+// Funktion för att kontrollera svaret
+function checkAnswer(selectedIndex) {
+  var currentQuestion = questions[currentQuestionIndex];
+  var correctAnswerIndex = currentQuestion.answerIndex;
+  var selectedOptionButton = optionsElement.children[selectedIndex];
+
+  if (selectedIndex === correctAnswerIndex) {
+    resultElement.textContent = "Rätt svar!";
+    resultElement.classList.add("correct");
+    selectedOptionButton.classList.add("correct");
+    score++;
+  } else {
+    resultElement.textContent = "Fel svar! Det rätta svaret är: " + currentQuestion.options[correctAnswerIndex];
+    resultElement.classList.add("incorrect");
+    selectedOptionButton.classList.add("incorrect");
+    resultElement.classList.remove("correct");
+    resultElement.classList.remove("incorrect");
+  }
+
+  scoreValueElement.textContent = score;
+
+  // Visa nästa fråga eller resultatet
+  if (currentQuestionIndex === questions.length - 1) {
+    showResult();
+  } else {
+    nextQuestionButton.style.display = "block";
+  }
+}
+
+
+
+    // Funktion för att visa resultatet
+    function showResult() {
+      questionElement.textContent = "Du har svarat på alla frågor!";
+      optionsElement.innerHTML = "";
+      resultElement.textContent = "Du fick " + score + " av " + questions.length + " rätt.";
+
+      nextQuestionButton.style.display = "none";
+      goHomeButton.style.display = "block";
+    }
+
+    // Funktion för att gå tillbaka till startsidan
+    function goHome() {
+      window.location.href = "index.html";
+    }
+
+    // Funktion för att gå till nästa fråga
+    function nextQuestion() {
+      currentQuestionIndex++;
+      showQuestion();
+    }
+
+    // Körs när sidan laddas
+    initialize();
+  </script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>HTML Frågesport</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, p {
+      text-align: center;
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .options {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .option-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 5px;
+      text-align: left;
+    }
+
+    .correct {
+      background-color: #b9e8b9;
+    }
+
+    .incorrect {
+      background-color: #ffbaba;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    #score {
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #next-question-btn, #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>HTML Frågesport</h1>
+  <div id="question-container">
+    <h2 id="question" class="question"></h2>
+    <ul id="options" class="options"></ul>
+  </div>
+  <p id="result"></p>
+  <p id="score">Poäng: <span id="score-value">0</span></p>
+  <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+  <button id="go-home-btn" onclick="goHome()">Gå tillbaka till hemskärmen</button>
+</div>
+
+<script>
+  var questionElement = document.getElementById("question");
+  var optionsElement = document.getElementById("options");
+  var resultElement = document.getElementById("result");
+  var nextQuestionBtn = document.getElementById("next-question-btn");
+  var goHomeBtn = document.getElementById("go-home-btn");
+  var scoreValueElement = document.getElementById("score-value");
+
+  var questions = [
+    {
+      question: "Vilket element används för att skapa en rubrik av högsta nivå i HTML?",
+      options: ["<h1>", "<h2>", "<h3>"],
+      answer: "<h1>"
+    },
+    {
+      question: "Vilket attribut används för att länka en extern CSS-fil till en HTML-sida?",
+      options: ["src", "rel", "href"],
+      answer: "href"
+    },
+    {
+      question: "Vilket element används för att skapa en osorterad lista i HTML?",
+      options: ["<ul>", "<ol>", "<li>"],
+      answer: "<ul>"
+    },
+    {
+      question: "Vilket attribut används för att ange en alternativ text för en bild i HTML?",
+      options: ["alt", "src", "title"],
+      answer: "alt"
+    },
+    {
+      question: "Vilket element används för att skapa en länk i HTML?",
+      options: ["<link>", "<a>", "<div>"],
+      answer: "<a>"
+    },
+    {
+      question: "Vilket attribut används för att ange bakgrundsfärgen för en HTML-element?",
+      options: ["color", "background", "bgcolor"],
+      answer: "background"
+    }
+  ];
+
+  var currentQuestionIndex = 0;
+  var score = 0;
+
+  function startQuiz() {
+    hideElement(goHomeBtn);
+    showElement(questionElement);
+    showElement(optionsElement);
+    showElement(nextQuestionBtn);
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    var currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    optionsElement.innerHTML = "";
+    currentQuestion.options.forEach(function (option) {
+      var li = document.createElement("li");
+      var button = document.createElement("button");
+      button.textContent = option;
+      button.setAttribute("class", "option-btn");
+      button.onclick = checkAnswer;
+      li.appendChild(button);
+      optionsElement.appendChild(li);
+    });
+  }
+
+  function checkAnswer(event) {
+    var selectedOption = event.target.textContent;
+    var currentQuestion = questions[currentQuestionIndex];
+    if (selectedOption === currentQuestion.answer) {
+      event.target.classList.add("correct");
+      resultElement.textContent = "Rätt svar!";
+      score++;
+    } else {
+      event.target.classList.add("incorrect");
+      resultElement.textContent = "Fel svar!";
+    }
+    disableOptions();
+    showElement(resultElement);
+    scoreValueElement.textContent = score;
+    if (currentQuestionIndex === questions.length - 1) {
+      nextQuestionBtn.textContent = "Slutför";
+    }
+    showElement(nextQuestionBtn);
+  }
+
+  function disableOptions() {
+    var optionButtons = optionsElement.getElementsByClassName("option-btn");
+    for (var i = 0; i < optionButtons.length; i++) {
+      optionButtons[i].disabled = true;
+    }
+  }
+
+  function enableOptions() {
+    var optionButtons = optionsElement.getElementsByClassName("option-btn");
+    for (var i = 0; i < optionButtons.length; i++) {
+      optionButtons[i].disabled = false;
+    }
+  }
+
+  function nextQuestion() {
+    if (currentQuestionIndex === questions.length - 1) {
+      finishQuiz();
+    } else {
+      currentQuestionIndex++;
+      renderQuestion();
+      resultElement.textContent = "";
+      enableOptions();
+      hideElement(resultElement);
+      hideElement(nextQuestionBtn);
+    }
+  }
+
+  function finishQuiz() {
+    questionElement.textContent = "Quizet är klart!";
+    optionsElement.innerHTML = "";
+    resultElement.textContent = "Du fick " + score + " av " + questions.length + " frågor rätt.";
+    hideElement(resultElement);
+    hideElement(nextQuestionBtn);
+    showElement(goHomeBtn);
+  }
+
+  function goHome() {
+    currentQuestionIndex = 0;
+    score = 0;
+    showElement(questionElement);
+    showElement(optionsElement);
+    showElement(nextQuestionBtn);
+    hideElement(resultElement);
+    hideElement(goHomeBtn);
+    renderQuestion();
+  }
+
+  function showElement(element) {
+    element.style.display = "block";
+  }
+
+  function hideElement(element) {
+    element.style.display = "none";
+  }
+
+  startQuiz();
+</script>
+</body>
+</html>

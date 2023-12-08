@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Additionsspel</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+    }
+    
+    header h1 {
+      margin: 0;
+    }
+    
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #eee;
+      padding: 10px;
+    }
+    
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+    
+    h2 {
+      color: #004e8c;
+    }
+    
+    p {
+      margin-top: 0;
+    }
+    
+    #next-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    #start-test-btn {
+      margin-top: 20px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    #explanation-container {
+      margin-top: 20px;
+    }
+    
+    #test-container {
+      display: none;
+      margin-top: 20px;
+    }
+    
+    #question {
+      margin-bottom: 10px;
+    }
+    
+    #answer {
+      margin-top: 10px;
+      padding: 5px;
+      font-size: 16px;
+      width: 200px;
+    }
+    
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    
+    #score {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Additionsspel</h1>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="#">Startsida</a></li>
+      <li><a href="#">Spela</a></li>
+    </ul>
+  </nav>
+  <main>
+    <div id="explanation-container">
+      <h2>Välkommen till Additionsspelet!</h2>
+      <p>Du har 2 äpplen och någon ger dig ytterligare 3 äpplen. För att ta reda på hur många äpplen du har totalt, lägger du bara till antalet äpplen. Så om du har 2 äpplen och får 3 till, blir det totalt 5 äpplen.</p>
+      <p>På samma sätt fungerar det med siffror. Om du har siffran 2 och du lägger till siffran 3, får du summan 5.</p>
+      <p>En annan metod är att använda fingrarna för att förstå addition. Låt oss säga att du har två fingrar på ena handen och tre fingrar på den andra handen. För att räkna ut hur många fingrar du har totalt, räknar du bara alla fingrar tillsammans. I det här fallet har du totalt fem fingrar.</p>
+      <p>Så genom att addera talen lägger du helt enkelt ihop dem för att få summan. Det spelar ingen roll vilken ordning talen skrivs i, summan blir densamma.</p>
+      <button id="start-test-btn">Starta test</button>
+    </div>
+    <div id="test-container">
+      <h2>Testa dina kunskaper i addition!</h2>
+      <p id="question"></p>
+      <input type="number" id="answer">
+      <button id="submit-btn">Svara</button>
+      <p id="result"></p>
+      <button id="next-btn">Nästa fråga</button>
+      <button id="home-btn">Tillbaka till startsidan</button>
+      <p id="score"></p>
+    </div>
+  </main>
+  <script>
+    var explanationContainer = document.getElementById("explanation-container");
+    var testContainer = document.getElementById("test-container");
+    var startTestButton = document.getElementById("start-test-btn");
+    var questionElement = document.getElementById("question");
+    var answerInput = document.getElementById("answer");
+    var submitButton = document.getElementById("submit-btn");
+    var resultElement = document.getElementById("result");
+    var nextButton = document.getElementById("next-btn");
+    var homeButton = document.getElementById("home-btn");
+    var scoreElement = document.getElementById("score");
+
+    var testQuestions = [
+      { num1: 2, num2: 3, answer: 5 },
+      { num1: 4, num2: 7, answer: 11 },
+      { num1: 9, num2: 6, answer: 15 },
+      { num1: 8, num2: 2, answer: 10 },
+      { num1: 1, num2: 5, answer: 6 },
+      { num1: 3, num2: 3, answer: 6 },
+      { num1: 7, num2: 2, answer: 9 },
+      { num1: 6, num2: 9, answer: 15 },
+      { num1: 10, num2: 4, answer: 14 },
+      { num1: 5, num2: 5, answer: 10 }
+    ];
+
+    var currentQuestionIndex = 0;
+    var score = 0;
+
+    startTestButton.addEventListener("click", function () {
+      explanationContainer.style.display = "none";
+      testContainer.style.display = "block";
+      showQuestion();
+    });
+
+    submitButton.addEventListener("click", function () {
+      var currentQuestion = testQuestions[currentQuestionIndex];
+      var userAnswer = parseInt(answerInput.value);
+
+      if (userAnswer === currentQuestion.answer) {
+        resultElement.textContent = "Rätt svar!";
+        score++;
+      } else {
+        resultElement.textContent = "Fel svar.";
+      }
+
+      answerInput.disabled = true;
+      submitButton.disabled = true;
+      nextButton.style.display = "block";
+    });
+
+    nextButton.addEventListener("click", function () {
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < testQuestions.length) {
+        showQuestion();
+      } else {
+        showScore();
+      }
+    });
+
+    homeButton.addEventListener("click", function () {
+      explanationContainer.style.display = "block";
+      testContainer.style.display = "none";
+      currentQuestionIndex = 0;
+      score = 0;
+    });
+
+    function showQuestion() {
+      var currentQuestion = testQuestions[currentQuestionIndex];
+      questionElement.textContent =
+        "Vad blir summan av " + currentQuestion.num1 + " och " + currentQuestion.num2 + "?";
+      answerInput.value = "";
+      answerInput.disabled = false;
+      submitButton.disabled = false;
+      resultElement.textContent = "";
+      nextButton.style.display = "none";
+    }
+
+    function showScore() {
+      questionElement.textContent = "Du är klar! Du fick " + score + " av " + testQuestions.length + " rätt.";
+      answerInput.style.display = "none";
+      submitButton.style.display = "none";
+      resultElement.textContent = "";
+      nextButton.style.display = "none";
+      scoreElement.textContent = "";
+    }
+  </script>
+</body>
+</html>

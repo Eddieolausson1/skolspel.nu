@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki Content</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #content {
+      margin-top: 20px;
+    }
+
+    a {
+      color: #0645ad;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Wiki Content</h1>
+
+<div id="content">
+  <!-- Content will be displayed here -->
+</div>
+
+<script>
+  // Read the search term from the URL
+  const searchTerm = new URLSearchParams(window.location.search).get('search');
+
+  // Display the search term in the content
+  if (searchTerm) {
+    const contentElement = document.getElementById('content');
+    contentElement.innerHTML = `<p>Search results for: <strong>${searchTerm}</strong></p>`;
+  }
+</script>
+
+</body>
+</html>

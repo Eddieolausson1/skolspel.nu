@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Allemansrätten</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+  background-color: #004e8c;
+  padding: 20px;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #eee;
+  padding: 10px;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+main {
+  background-color: white;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+h2 {
+  color: #004e8c;
+}
+
+p {
+  margin-top: 0;
+}
+
+#question-container {
+  margin-top: 20px;
+}
+
+#options {
+  margin-top: 10px;
+}
+
+.option-btn {
+  display: block;
+  margin-bottom: 5px;
+  padding: 8px;
+  font-size: 16px;
+  width: 200px;
+  cursor: pointer;
+}
+
+.option-btn:hover {
+  background-color: #eee;
+}
+
+.correct {
+  background-color: green;
+  color: white;
+}
+
+.incorrect {
+  background-color: red;
+  color: white;
+}
+
+#result {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#next-question-btn {
+  display: none;
+  margin-top: 10px;
+  background-color: #004e8c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#go-home-btn {
+  display: none;
+  margin-top: 10px;
+  background-color: #004e8c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#score {
+  margin-bottom: 10px;
+}
+ </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Allemansrätten</h1>
+    <p id="score">Poäng: <span id="score-value"></span></p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Allemansrätten</h2>
+    <p>Välj det korrekta svaret på varje fråga om Allemansrätten.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+<script>
+  var questionElement = document.getElementById("question");
+  var optionsElement = document.getElementById("options");
+  var resultElement = document.getElementById("result");
+  var nextQuestionBtn = document.getElementById("next-question-btn");
+  var goHomeBtn = document.getElementById("go-home-btn");
+  var scoreValueElement = document.getElementById("score-value");
+
+var questions = [
+  {
+    question: "Vilken rätt innebär allemansrätten i Sverige?",
+    options: ["Rätten att vistas och plocka bär i naturen", "Rätten att jaga i privata skogar", "Rätten att campa på privat mark"],
+    answer: "Rätten att vistas och plocka bär i naturen"
+  },
+  {
+    question: "Vad innebär det att ta hänsyn till allemansrätten?",
+    options: ["Att respektera och skydda naturen", "Att kräva tillstånd för varje aktivitet utomhus", "Att störa djurlivet och förstöra växtligheten"],
+    answer: "Att respektera och skydda naturen"
+  },
+  {
+    question: "Vilka aktiviteter är tillåtna enligt allemansrätten?",
+    options: ["Att plocka svamp och blommor", "Att fiska i alla vattendrag", "Att bygga eld var som helst"],
+    answer: "Att plocka svamp och blommor"
+  },
+  {
+    question: "Vad innebär det att inte störa djurlivet enligt allemansrätten?",
+    options: ["Att inte mata eller skrämma djur", "Att jaga djur för nöjes skull", "Att ta med sig husdjur överallt"],
+    answer: "Att inte mata eller skrämma djur"
+  },
+  {
+    question: "Vilken princip gäller för allemansrätten i samband med tältning?",
+    options: ["Att inte stanna längre än en natt på samma plats", "Att tälta var som helst utan tillstånd", "Att lämna skräp och sopor efter sig"],
+    answer: "Att inte stanna längre än en natt på samma plats"
+  },
+  {
+    question: "Vad är tillåtet enligt allemansrätten när det gäller båtliv?",
+    options: ["Att använda allmänna bryggor och stränder", "Att lägga till vid privata bryggor utan tillstånd", "Att fiska med nät överallt"],
+    answer: "Att använda allmänna bryggor och stränder"
+  },
+  {
+    question: "Vilka platser får man inte beträda enligt allemansrätten?",
+    options: ["Privat inhägnad mark", "Naturreservat och nationalparker", "Alla markområden är tillåtna"],
+    answer: "Privat inhägnad mark"
+  },
+  {
+    question: "Hur kan man bidra till att bevara allemansrätten?",
+    options: ["Genom att plocka upp sitt skräp och ta hand om naturen", "Genom att störa djurlivet och trampa på växterna", "Genom att använda eldplatser överallt"],
+    answer: "Genom att plocka upp sitt skräp och ta hand om naturen"
+  },
+  {
+    question: "Vad ska man göra om man möter en älg eller annat stort vilt djur?",
+    options: ["Ge djuret gott om utrymme och undvik att skrämma det", "Springa snabbt i motsatt riktning", "Försöka mata djuret för att bli vän med det"],
+    answer: "Ge djuret gott om utrymme och undvik att skrämma det"
+  },
+  {
+    question: "Hur påverkar allemansrätten möjligheten att njuta av naturen i Sverige?",
+    options: ["Den ger alla möjlighet att uppleva och njuta av naturen", "Den begränsar tillgången till naturupplevelser", "Den gäller endast för svenska medborgare"],
+    answer: "Den ger alla möjlighet att uppleva och njuta av naturen"
+  }
+];
+
+
+  var questionCount = 10;
+  var selectedQuestions = getRandomQuestions(questions, questionCount);
+  var currentQuestionIndex = 0;
+  var currentQuestion = selectedQuestions[currentQuestionIndex];
+  var score = 0;
+
+  // Visa den aktuella frågan
+  showQuestion();
+  updateScore();
+
+  // Visa nästa fråga när spelaren klickar på "Nästa fråga"-knappen
+  function nextQuestion() {
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questionCount) {
+      currentQuestion = selectedQuestions[currentQuestionIndex];
+      showQuestion();
+      nextQuestionBtn.style.display = "none";
+      resultElement.textContent = "";
+    } else {
+      endGame();
+    }
+  }
+
+  // Visa den aktuella frågan
+  function showQuestion() {
+    questionElement.textContent = currentQuestion.question;
+    optionsElement.innerHTML = "";
+
+    for (var i = 0; i < currentQuestion.options.length; i++) {
+      var optionBtn = document.createElement("button");
+      optionBtn.classList.add("option-btn");
+      optionBtn.textContent = currentQuestion.options[i];
+      optionBtn.setAttribute("onclick", "checkAnswer(this)");
+      optionsElement.appendChild(optionBtn);
+    }
+  }
+
+  // Kontrollera svaret när spelaren klickar på ett svarsalternativ
+  function checkAnswer(btn) {
+    var playerAnswer = btn.textContent;
+
+    if (playerAnswer === currentQuestion.answer) {
+      btn.classList.add("correct");
+      resultElement.textContent = "Rätt svar!";
+      resultElement.style.color = "green";
+      score++;
+      updateScore();
+    } else {
+      btn.classList.add("incorrect");
+      resultElement.textContent = "Fel svar. Det korrekta svaret var: " + currentQuestion.answer;
+      resultElement.style.color = "red";
+    }
+
+    // Inaktivera alla svarsalternativ
+    var optionButtons = optionsElement.getElementsByClassName("option-btn");
+    for (var i = 0; i < optionButtons.length; i++) {
+      optionButtons[i].disabled = true;
+    }
+
+    nextQuestionBtn.style.display = "block";
+  }
+
+  // Avsluta spelet och visa resultatet
+  function endGame() {
+    questionElement.textContent = "Spelet är klart!";
+    resultElement.textContent = "Du fick " + score + " av " + questionCount + " rätt.";
+    optionsElement.innerHTML = "";
+    nextQuestionBtn.style.display = "none";
+    goHomeBtn.style.display = "block";
+  }
+
+  // Uppdatera poängvärdet
+  function updateScore() {
+    scoreValueElement.textContent = score;
+  }
+
+  // Gå tillbaka till hemskärmen
+  function goHome() {
+    window.location.href = "index.html";
+  }
+
+  // Funktion för att välja slumpmässiga frågor
+  function getRandomQuestions(allQuestions, count) {
+    var randomQuestions = [];
+    var questionIndexes = [];
+    var totalQuestions = allQuestions.length;
+
+    if (count > totalQuestions) {
+      count = totalQuestions;
+    }
+
+    while (questionIndexes.length < count) {
+      var randomIndex = Math.floor(Math.random() * totalQuestions);
+      if (!questionIndexes.includes(randomIndex)) {
+        questionIndexes.push(randomIndex);
+        randomQuestions.push(allQuestions[randomIndex]);
+      }
+    }
+
+    return randomQuestions;
+  }
+</script>
+</body>
+</html>

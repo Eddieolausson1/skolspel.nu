@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Addition upp till 100</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+    }
+    
+    header h1 {
+      margin: 0;
+    }
+    
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #eee;
+      padding: 10px;
+    }
+    
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+    
+    h2 {
+      color: #004e8c;
+    }
+    
+    p {
+      margin-top: 0;
+    }
+    
+    #question-container {
+      margin-top: 20px;
+    }
+    
+    #answer {
+      margin-top: 10px;
+      padding: 5px;
+      font-size: 16px;
+      width: 200px;
+    }
+    
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    
+    #next-question-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Addition upp till 100</h1>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="spel.html">Spel</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <h2>Addition upp till 100</h2>
+    <p>Skriv in svaret på additionen av de två tal som visas nedan. Talen kommer vara mellan 1 och 100.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <input type="text" id="answer" placeholder="Skriv ditt svar här">
+      <button onclick="checkAnswer()">Kontrollera</button>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+  
+  <script>
+    var questionElement = document.getElementById("question");
+    var answerElement = document.getElementById("answer");
+    var resultElement = document.getElementById("result");
+    var nextQuestionBtn = document.getElementById("next-question-btn");
+    var goHomeBtn = document.getElementById("go-home-btn");
+
+    var questions = [
+      { question: "Vad blir 27 + 42?", answer: "69" },
+      { question: "Vad blir 54 + 23?", answer: "77" },
+      { question: "Vad blir 81 + 9?", answer: "90" },
+      { question: "Vad blir 36 + 48?", answer: "84" },
+      { question: "Vad blir 63 + 17?", answer: "80" },
+      { question: "Vad blir 92 + 5?", answer: "97" },
+      { question: "Vad blir 75 + 22?", answer: "97" },
+      { question: "Vad blir 18 + 83?", answer: "101" },
+      { question: "Vad blir 69 + 7?", answer: "76" },
+      { question: "Vad blir 44 + 58?", answer: "102" },
+      { question: "Vad blir 89 + 11?", answer: "100" },
+      { question: "Vad blir 31 + 47?", answer: "78" },
+      { question: "Vad blir 72 + 28?", answer: "100" },
+      { question: "Vad blir 86 + 12?", answer: "98" },
+      { question: "Vad blir 95 + 3?", answer: "98" },
+      { question: "Vad blir 67 + 25?", answer: "92" },
+      { question: "Vad blir 24 + 43?", answer: "67" },
+      { question: "Vad blir 55 + 34?", answer: "89" },
+      { question: "Vad blir 39 + 41?", answer: "80" },
+      { question: "Vad blir 88 + 12?", answer: "100" },
+      { question: "Vad blir 57 + 32?", answer: "89" },
+      { question: "Vad blir 76 + 18?", answer: "94" },
+      { question: "Vad blir 83 + 17?", answer: "100" },
+      { question: "Vad blir 49 + 29?", answer: "78" },
+      { question: "Vad blir 62 + 27?", answer: "89" },
+      { question: "Vad blir 37 + 46?", answer: "83" },
+      { question: "Vad blir 94 + 6?", answer: "100" },
+      { question: "Vad blir 71 + 18?", answer: "89" },
+      { question: "Vad blir 82 + 9?", answer: "91" },
+      { question: "Vad blir 59 + 21?", answer: "80" }
+      // Lägg till fler frågor här om du vill
+    ];
+
+    var selectedQuestions = getRandomQuestions(questions, 10);
+    var currentQuestionIndex = 0;
+    var currentQuestion = selectedQuestions[currentQuestionIndex];
+
+    // Visa den aktuella frågan
+    showQuestion();
+
+    // Visa nästa fråga när spelaren klickar på "Nästa fråga"-knappen
+    function nextQuestion() {
+      currentQuestionIndex++;
+      
+      if (currentQuestionIndex < selectedQuestions.length) {
+        currentQuestion = selectedQuestions[currentQuestionIndex];
+        showQuestion();
+        nextQuestionBtn.style.display = "none";
+        goHomeBtn.style.display = "none";
+      } else {
+        questionElement.textContent = "Inga fler frågor.";
+        answerElement.disabled = true;
+        nextQuestionBtn.style.display = "none";
+        goHomeBtn.style.display = "block";
+      }
+    }
+
+    // Visa den aktuella frågan
+    function showQuestion() {
+      questionElement.textContent = currentQuestion.question;
+      answerElement.value = "";
+      resultElement.textContent = "";
+    }
+
+    // Kontrollera svaret när spelaren klickar på "Kontrollera"-knappen
+    function checkAnswer() {
+      var playerAnswer = answerElement.value.trim();
+
+      if (playerAnswer === currentQuestion.answer) {
+        resultElement.textContent = "Rätt svar!";
+        resultElement.style.color = "green";
+        nextQuestionBtn.style.display = "block";
+      } else {
+        resultElement.textContent = "Fel svar. Försök igen.";
+        resultElement.style.color = "red";
+        nextQuestionBtn.style.display = "none";
+      }
+    }
+
+    // Gå till hemskärmen när spelaren klickar på "Gå till hemskärmen"-knappen
+    function goHome() {
+      window.location.href = "index.html";
+    }
+
+    // Funktion för att välja slumpmässiga frågor från en given lista
+    function getRandomQuestions(questions, numQuestions) {
+      var randomizedQuestions = [];
+
+      // Kopiera frågorna till en ny lista för att inte modifiera den ursprungliga listan
+      var copiedQuestions = questions.slice();
+
+      for (var i = 0; i < numQuestions; i++) {
+        var randomIndex = Math.floor(Math.random() * copiedQuestions.length);
+        var randomQuestion = copiedQuestions.splice(randomIndex, 1)[0];
+        randomizedQuestions.push(randomQuestion);
+      }
+
+      return randomizedQuestions;
+    }
+  </script>
+</body>
+</html>

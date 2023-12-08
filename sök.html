@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myUL {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#myUL li a {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block
+}
+
+#myUL li a:hover:not(.header) {
+  background-color: #eee;
+}
+  
+</style>
+</head>
+<body>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Sök efter spel.." title="Sök efter spel..">
+
+<ul id="myUL">
+  <li><a href="matte1.html">Addition upp till 10</a></li>
+  <li><a href="matte2.html">Addition upp till 100</a></li>
+  <li><a href="matte3.html">Addition upp till 1000</a></li>
+  <li><a href="matte4.html">Subtraktion upp till 10</a></li>
+  <li><a href="matte5.html">Subtraktion upp till 100</a></li>
+  <li><a href="matte6.html">Subtraktion upp till 1000</a></li>
+  <li><a href="matte7.html">Multiplikation upp till 10</a></li>
+  <li><a href="matte8.html">Multiplikation upp till 100</a></li>
+  <li><a href="matte9.html">Multiplikation upp till 1000</a></li>
+  <li><a href="matte10.html">Hur du använder Addition</a></li>
+  <li><a href="matte12.html">Gissa Längdenheter (mm, cm, dm, m och km)</a></li>
+  <li><a href="matte13.html">Gissa Längdenheternas Namn (mm, cm, dm, m och km)</a></li>
+  <li><a href="matte14.html">Gissa Viktenheternas Namn</a></li>
+  <li><a href="matte15.html">Gissa Viktenheter</a></li>
+  <li><a href="matte16.html">Gissa Medelhastigheten (km/h)</a></li>
+  <li><a href="sprak1.html">Tyska Till Svenska</a></li>
+  <li><a href="sprak2.html">Franska Till Svenska</a></li>
+  <li><a href="sprak3.html">Engelska Till Svenska</a></li>
+  <li><a href="sprak4.html">Finska Till Svenska</a></li>
+  <li><a href="vok.html">Vokaler</a></li>
+  <li><a href="konso.html">Konsonanter</a></li>
+  <li><a href="hangagubbe.html">Hänga Gubbe</a></li>
+  <li><a href="fyrairad.html">Fyra I Rad</a></li>
+  <li><a href="geo1.html">Hav Och Vatten</a></li>
+  <li><a href="nat1.html">Ekologi</a></li>
+  <li><a href="hist1.html">Stormaktstiden</a></li>
+  <li><a href="hist2.html">Medeltiden</a></li>
+  <li><a href="hist3.html">Första världskriget</a></li>
+  <li><a href="hist4.html">Andra världskriget</a></li>
+  <li><a href="kemi1.html">Molekyler och Kemiska Reaktioner</a></li>
+  <li><a href="mus1.html">Instrumentgrupper</a></li>
+  <li><a href="mus2.html">Instrumenternas namn</a></li>
+  <li><a href="pro1.html">Python</a></li>
+  <li><a href="pro2.html">HTML</a></li>
+    <li><a href="stk.html">Snabbhetstest på Keyboard</a></li>
+      <li><a href="idrott1.html">Allemansrätten</a></li>
+  <li><a href="idrott2.html">Hjärt-Lung-Räddning (HLR)</a></li>
+  <li><a href="idrott3.html">Issäkerhet</a></li>
+  <li><a href="idrott4.html">Kost och Hälsa</a></li>
+  <li><a href="idrott5.html">Orienteringstecken
+</a></li>
+  <li><a href="bild1.html">Linjetyper</a></li>
+    <li><a href="sprak5.html">Engelska till Svenska Memory</a></li>
+      <li><a href="sprak6.html">Tyska till Svenska Memory</a></li>
+    <li><a href="matte17.html">Division upp till 10</a></li>
+    <li><a href="matte18.html">Division upp till 100</a></li>
+    <li><a href="matte19.html">Division upp till 1000</a></li>
+</ul>
+
+<script>
+function myFunction() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
+
+</body>
+</html>

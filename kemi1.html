@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Molekyler och Kemiska Reaktioner</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      color: #004e8c;
+      margin-top: 0;
+    }
+
+    p {
+      margin-top: 0;
+      line-height: 1.5;
+    }
+
+    #question-container {
+      margin-top: 20px;
+    }
+
+    #options {
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      cursor: pointer;
+    }
+
+    .option-btn:hover {
+      background-color: #eee;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #next-question-btn,
+    #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #score {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Molekyler och Kemiska Reaktioner</h1>
+    <p id="score">Poäng: <span id="score-value"></span></p>
+  </header>
+  <main>
+    <h2>Molekyler och Kemiska Reaktioner</h2>
+    <p>Välj det korrekta svaret på varje fråga om molekyler, byggstenar och kemiska reaktioner.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+  <script>
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    var resultElement = document.getElementById("result");
+    var nextQuestionBtn = document.getElementById("next-question-btn");
+    var goHomeBtn = document.getElementById("go-home-btn");
+    var scoreValueElement = document.getElementById("score-value");
+
+    var questions = [
+      {
+        question: "Vad är H2O?",
+        options: ["Vatten", "Syre", "Koldioxid", "Väteperoxid"],
+        answer: "Vatten"
+      },
+      {
+        question: "Vilken molekyl består av kvävebaser?",
+        options: ["Glukos", "DNA", "Protein", "Lipid"],
+        answer: "DNA"
+      },
+      {
+        question: "Vad är HCl?",
+        options: ["Saltsyra", "Kolsyra", "Svavelsyra", "Salpetersyra"],
+        answer: "Saltsyra"
+      },
+      {
+        question: "Vilken molekyl ger energi till cellerna?",
+        options: ["ATP", "ADP", "GTP", "CTP"],
+        answer: "ATP"
+      },
+      {
+        question: "Vilket ämne är huvudbeståndsdelen i luft?",
+        options: ["Kväve", "Syre", "Koldioxid", "Väte"],
+        answer: "Kväve"
+      },
+      {
+        question: "Vad är NaCl?",
+        options: ["Natriumklorid", "Natriumsulfat", "Kaliumklorid", "Kaliumnitrat"],
+        answer: "Natriumklorid"
+      },
+      {
+        question: "Vilken molekyl ger färg åt blod?",
+        options: ["Hemoglobin", "Klorofyll", "Kollagen", "Melanin"],
+        answer: "Hemoglobin"
+      },
+      {
+        question: "Vad är CO2?",
+        options: ["Koldioxid", "Kolmonoxid", "Kvicksilver", "Svaveldioxid"],
+        answer: "Koldioxid"
+      },
+      {
+        question: "Vilket ämne finns mest av i jordskorpan?",
+        options: ["Syre", "Kisel", "Kalcium", "Aluminium"],
+        answer: "Syre"
+      },
+      {
+        question: "Vad är H2SO4?",
+        options: ["Svavelsyra", "Saltsyra", "Salpetersyra", "Kolsyra"],
+        answer: "Svavelsyra"
+      }
+    ];
+
+    var currentQuestionIndex = 0;
+    var score = 0;
+
+    function displayQuestion() {
+      var currentQuestion = questions[currentQuestionIndex];
+      questionElement.textContent = currentQuestion.question;
+
+      optionsElement.innerHTML = "";
+
+      currentQuestion.options.forEach(function(option) {
+        var button = document.createElement("button");
+        button.classList.add("option-btn");
+        button.textContent = option;
+        button.onclick = checkAnswer;
+        optionsElement.appendChild(button);
+      });
+
+      resultElement.textContent = "";
+      nextQuestionBtn.style.display = "none";
+    }
+
+    function checkAnswer(event) {
+      var selectedOption = event.target;
+      var selectedAnswer = selectedOption.textContent;
+      var currentQuestion = questions[currentQuestionIndex];
+
+      if (selectedAnswer === currentQuestion.answer) {
+        selectedOption.classList.add("correct");
+        resultElement.textContent = "Rätt svar!";
+        score++;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultElement.textContent = "Fel svar!";
+      }
+
+      Array.from(optionsElement.children).forEach(function(option) {
+        option.disabled = true;
+        if (option.textContent === currentQuestion.answer) {
+          option.classList.add("correct");
+        }
+      });
+
+      nextQuestionBtn.style.display = "block";
+
+      if (currentQuestionIndex === questions.length - 1) {
+        nextQuestionBtn.textContent = "Avsluta";
+      }
+
+      scoreValueElement.textContent = score;
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex === questions.length) {
+        // Slut på frågor
+        showFinalScore();
+      } else {
+        displayQuestion();
+      }
+    }
+
+    function showFinalScore() {
+      questionElement.textContent = "Spel slut!";
+      optionsElement.innerHTML = "";
+      resultElement.textContent = "Din slutpoäng är " + score + " av " + questions.length + ".";
+      nextQuestionBtn.style.display = "none";
+      goHomeBtn.style.display = "block";
+    }
+
+    function goHome() {
+  window.location.href = "index.html";
+      currentQuestionIndex = 0;
+      score = 0;
+      displayQuestion();
+      goHomeBtn.style.display = "none";
+      scoreValueElement.textContent = score;
+    }
+
+    displayQuestion();
+  </script>
+</body>
+</html>

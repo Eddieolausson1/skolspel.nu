@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Subtraktion upp till 1000</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #004e8c;
+  padding: 20px;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #eee;
+  padding: 10px;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+main {
+  background-color: white;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+h2 {
+  color: #004e8c;
+}
+
+p {
+  margin-top: 0;
+}
+
+#question-container {
+  margin-top: 20px;
+}
+
+#answer {
+  margin-top: 10px;
+  padding: 5px;
+  font-size: 16px;
+  width: 200px;
+}
+
+#result {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#next-question-btn,
+#go-home-btn {
+  display: none;
+  margin-top: 10px;
+  background-color: #004e8c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#score {
+  margin-bottom: 10px;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Subtraktion upp till 1000</h1>
+    <p id="score">Poäng: <span id="score-value">0</span></p>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <h2>Subtraktion upp till 1000</h2>
+    <p>Skriv in svaret på subtraktionen av de två tal som visas nedan. Talen kommer vara mellan 1 och 1000.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <input type="text" id="answer" placeholder="Skriv ditt svar här">
+      <button onclick="checkAnswer()">Kontrollera</button>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+  
+  <script>
+    var questionElement = document.getElementById("question");
+var answerElement = document.getElementById("answer");
+var resultElement = document.getElementById("result");
+var nextQuestionBtn = document.getElementById("next-question-btn");
+var goHomeBtn = document.getElementById("go-home-btn");
+var scoreValueElement = document.getElementById("score-value");
+
+var questions = [
+  { question: "Vad blir 1500 - 501?", answer: "999" },
+  { question: "Vad blir 850 - 423?", answer: "427" },
+  { question: "Vad blir 980 - 168?", answer: "812" },
+  { question: "Vad blir 200 - 99?", answer: "101" },
+  { question: "Vad blir 750 - 125?", answer: "625" },
+  { question: "Vad blir 1000 - 245?", answer: "755" },
+  { question: "Vad blir 600 - 89?", answer: "511" },
+  { question: "Vad blir 400 - 212?", answer: "188" },
+  { question: "Vad blir 950 - 617?", answer: "333" },
+  { question: "Vad blir 300 - 124?", answer: "176" }
+];
+
+var selectedQuestions = getRandomQuestions(questions, 10);
+var currentQuestionIndex = 0;
+var currentQuestion = selectedQuestions[currentQuestionIndex];
+var score = 0;
+
+// Show the current question
+showQuestion();
+updateScore();
+
+// Display the next question
+function nextQuestion() {
+  currentQuestionIndex++;
+  if (currentQuestionIndex === selectedQuestions.length) {
+    showResult();
+  } else if (currentQuestionIndex < selectedQuestions.length) {
+    showQuestion();
+  }
+}
+
+// Show the current question
+function showQuestion() {
+  currentQuestion = selectedQuestions[currentQuestionIndex];
+  questionElement.textContent = currentQuestion.question;
+  answerElement.value = "";
+  resultElement.textContent = "";
+  nextQuestionBtn.style.display = "none";
+}
+
+// Check the answer when the player clicks "Kontrollera"
+function checkAnswer() {
+  var playerAnswer = answerElement.value.trim();
+
+  if (playerAnswer === currentQuestion.answer) {
+    resultElement.textContent = "Rätt svar!";
+    resultElement.style.color = "green";
+    score++;
+  } else {
+    resultElement.textContent = "Fel svar. Rätt svar är " + currentQuestion.answer + ".";
+    resultElement.style.color = "red";
+  }
+
+  nextQuestionBtn.style.display = "block";
+  updateScore();
+}
+
+// Go to the home screen
+function goHome() {
+  window.location.href = "index.html";
+}
+
+// Update the score value and display score message
+function updateScore() {
+  scoreValueElement.textContent = score;
+}
+
+// Show the result with the final score
+function showResult() {
+  questionElement.textContent = "Spelet är klart!";
+  answerElement.style.display = "none";
+  resultElement.textContent = "Du fick " + score + " av " + selectedQuestions.length + " rätt.";
+  nextQuestionBtn.style.display = "none";
+  goHomeBtn.style.display = "block";
+}
+
+// Select random questions from a list
+function getRandomQuestions(questionList, count) {
+  var shuffledQuestions = questionList.sort(function () {
+    return Math.random() - 0.5;
+  });
+  return shuffledQuestions.slice(0, count);
+}
+
+  </script>
+</body>
+</html>

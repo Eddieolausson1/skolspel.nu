@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<script>
+    // Registrera Service Workern
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(function(registration) {
+          console.log('Service Worker registrerad:', registration);
+        })
+        .catch(function(error) {
+          console.log('Service Worker registrering misslyckades:', error);
+        });
+    }
+  </script>
+<p style="display: none;">Skolspel är en lärplattform för alla åldrar både för skolan och hemmet.</p>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="script.js"></script>
+<div id="ezoic-accreditation-container"></div>
+<link rel="icon" href="logo.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="se">
+<head>
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WJM3H6T');</script>
+<!-- End Google Tag Manager -->
+  <script src="https://ads.holid.io/auto/skolspel.nu/holid.js" defer="defer"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <script>(function(w,d,s){w._uptime_rum2={};w._uptime_rum2.errors=[];w._uptime_rum2.uuid='Z67Y-F881B2B71E45C56F';w._uptime_rum2.url='https://rumcollector.uptime.com';s=document.createElement('script');s.async=1;s.src='https://rum.uptime.com/static/rum/compiled/v2/rum.js';d.getElementsByTagName('head')[0].appendChild(s);w.addEventListener('error',function(e){w._uptime_rum2.errors.push({t:new Date(),err:e})});})(window,document);</script>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TY9271K3P"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7TY9271K3P');
+</script>
+<!-- här börjar <sj></sj>älva webbsidan -->
+  <title>Skolspel</title>
+<style>
+
+  .hidden {
+  display: none;
+}
+
+  /* search highlight */
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}
+
+  #search-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#search-input {
+  padding: 5px;
+  width: 200px;
+  margin-right: 10px;
+}
+
+#search-button {
+  padding: 5px 10px;
+  background-color: #3366cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  /* Reset CSS */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Score */
+  .score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+  }
+
+  /* Sidlayout */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+  }
+
+  header {
+    background-color: #3366cc;
+    padding: 20px;
+    color: white;
+    text-align: center;
+  }
+
+  nav ul {
+    list-style-type: none;
+    background-color: #003399;
+    overflow: hidden;
+  }
+
+  nav ul li {
+    float: left;
+  }
+
+  nav ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  nav ul li a:hover {
+    background-color: #002366;
+  }
+
+  main {
+    padding: 20px;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  .game-preview {
+    text-align: center;
+  }
+
+  .game-preview img {
+    width: 200px;
+    height: 150px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .game-preview a {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #3366cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  .game-preview a:hover {
+    background-color: #002366;
+  }
+
+  footer {
+    background-color: #003399;
+    padding: 20px;
+    color: white;
+    text-align: center;
+  }
+
+  /* Popup */
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .popup h3 {
+    margin-bottom: 10px;
+  }
+
+  .popup input {
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  .popup button {
+    padding: 8px 16px;
+    background-color: #3366cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJM3H6T"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  <header>
+    <h1>Välkommen till Skolspel!</h1>
+<!-- <p>Den här websidan är fortfarande i utveckling, förvänta dig massor av förändringar över kl 13:00 på tisdagar, onsdagar och fredagar och över kl 15:00 på måndagar och torsdagar. Kan hända när som helst på lördagar och söndagar</p> -->
+    <p>Skolspel är en lärplattform för alla åldrar både för skolan och hemmet.
+ Förändringar kan ske.</p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+       <li><a href="sök.html">Sök</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+      <li><a href="kontakt.html">Kontakta Oss</a>
+      <li><a href="404.html" id="forlarare-link">För Lärare</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Spel <h4><strong>Runt 12 ämnen och 43 spel</strong></h4></h2>
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <script>
+      function loadClassContent() {
+          var classSelect = document.getElementById("classSelect");
+          var selectedClass = classSelect.value;
+          var contentDiv = document.getElementById("content");
+
+          if (selectedClass === "") {
+              contentDiv.innerHTML = "No class selected.";
+          } else {
+              // Load content based on the selected class
+              contentDiv.innerHTML = "Content for Class " + selectedClass;
+          }
+      }
+    </script>
+    </head>
+    <body>
+    <label for="classSelect">Select a Class:</label>
+    <select id="classSelect" onchange="loadClassContent()">
+      <option value="">Select Class</option>
+      <option value="1">Class 1</option>
+      <option value="2">Class 2</option>
+      <option value="3">Class 3</option>
+      <option value="4">Class 4</option>
+      <option value="5">Class 5</option>
+      <option value="6">Class 6</option>
+      <option value="7">Class 7</option>
+      <option value="8">Class 8</option>
+      <option value="9">Class 9</option>
+      <option value="10">Class 10</option>
+    </select>
+
+    <section>
+      <h3>Matematikspel</h3>
+      <p>Spela roliga matematikspel för att träna upp dina matematikkunskaper.</p>
+      <div class="game-preview">
+        <a href="ms.html" id="button1">Spela nu</a>
+      </div>
+    </section>
+    <section>
+      <h3>Språkspel</h3>
+      <p>Utveckla din ordförståelse och grammatik genom våra spännande språkspel.</p>
+      <div class="game-preview">
+        <a href="sprakspel.html" id="button2">Spela nu</a>
+      </div>
+    </section>
+            <section>
+      <h3>Svenskaspel</h3>
+      <p>Träna upp din svenska med våra roliga svenskaspel.</p>
+      <div class="game-preview">
+        <a href="ss.html" id="button3">Spela nu</a>
+      </div>
+    </section>
+                <section>
+      <h3>Hjärngympa Spel</h3>
+      <p>Träna upp din hjärna med våra hjärnspel.</p>
+      <div class="game-preview">
+        <a href="hg.html" id="button4">Spela nu</a>
+      </div>
+    </section>
+    <section>
+      <h3>Geografispel</h3>
+      <p>Utforska världen genom våra spännande geografispel.</p>
+      <div class="game-preview">
+        <a href="geografispel.html" id="button5">Spela nu</a>
+      </div>
+    </section>
+    <section>
+      <h3>Naturvetenskapsspel</h3>
+      <p>Upptäck naturens hemligheter genom våra underhållande naturvetenskapsspel.</p>
+      <div class="game-preview">
+        <a href="natspel.html" id="button6">Spela nu</a>
+      </div>
+    </section>
+    <section>
+      <h3>Historiaspel</h3>
+      <p>Res tillbaka i tiden och upplev historiska händelser med våra spännande historiaspel.</p>
+      <div class="game-preview">
+        <a href="historiaspel.html" id="button7">Spela nu</a>
+      </div>
+    </section>
+    <section>
+      <h3>Kemispel</h3>
+      <p>Utforska ämnen och reaktioner med våra spännande kemispel.</p>
+      <div class="game-preview">
+        <a href="kemispel.html" id="button8">Spela nu</a>
+      </div>
+    </section>
+    <section>
+      <h3>Musikspel</h3>
+      <p>Utforska musikens värld och testa dina musikkunskaper med våra underhållande musikspel.</p>
+      <div class="game-preview">
+        <a href="musikspel.html" id="button9">Spela nu</a>
+      </div>
+    </section>
+                <section>
+      <h3>Programmeringsspel</h3>
+      <p>Träna upp din programmering med våra roliga programmeringsspel.</p>
+      <div class="game-preview">
+        <a href="pros.html" id="button10">Spela nu</a>
+      </div>
+    </section>
+        <section>
+      <h3>Idrottsspel</h3>
+      <p>Testa dina idrottskunskaper genom våra spännande idrottsspel.</p>
+      <div class="game-preview">
+        <a href="idrottsspel.html" id="button11">Spela nu</a>
+      </div>
+    </section>
+        <section>
+      <h3>Bildspel</h3>
+      <p>Testa dina bildkunskaper!</p>
+      <div class="game-preview">
+        <a href="bildspel.html" id="button12">Spela nu</a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>Skolspel &copy; 2023 | Alla rättigheter förbehållna</p>
+  </footer>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  // JavaScript code here
+  const popupOverlay = document.querySelector('.popup-overlay');
+  const popup = document.querySelector('.popup');
+  const loginButton = document.getElementById('login-button');
+  const passwordInput = document.getElementById('password-input');
+  const closePopupBtn = document.getElementById('close-popup');
+  const loginError = document.getElementById('login-error');
+
+  const correctPassword = '1234'; // Replace with your desired login code
+
+  function openPopup() {
+    popupOverlay.style.display = 'block';
+    popup.style.display = 'block';
+  }
+
+  function closePopup() {
+    popupOverlay.style.display = 'none';
+    popup.style.display = 'none';
+    loginError.style.display = 'none';
+    passwordInput.value = '';
+  }
+
+  function showLoginError() {
+    loginError.style.display = 'block';
+  }
+
+  function openLoggedInPage() {
+    window.location.href = 'forlarare.html';
+  }
+
+  loginButton.addEventListener('click', function() {
+    const enteredPassword = passwordInput.value;
+    if (enteredPassword === correctPassword) {
+      openLoggedInPage();
+    } else {
+      showLoginError();
+    }
+  });
+
+  closePopupBtn.addEventListener('click', closePopup);
+  popupOverlay.addEventListener('click', function(event) {
+    if (event.target === popupOverlay) {
+      closePopup();
+    }
+  });
+
+  document.getElementById('forlarare-link').addEventListener('click', openPopup);
+
+// you didnt see this // not gg anal stuff //
+  // Function to track button clicks in Google Analytics
+  function trackButtonClick(eventCategory, eventLabel) {
+    gtag('event', 'button_click', {
+      'event_category': eventCategory,
+      'event_label': eventLabel,
+      'transport_type': 'beacon'
+    });
+  }
+
+  // Track button clicks for each button
+  document.getElementById("button1").addEventListener("click", function() {
+    trackButtonClick('Button', 'button1');
+  });
+
+  document.getElementById("button2").addEventListener("click", function() {
+    trackButtonClick('Button', 'button2');
+  });
+
+  document.getElementById("button3").addEventListener("click", function() {
+    trackButtonClick('Button', 'button3');
+  });
+
+  document.getElementById("button4").addEventListener("click", function() {
+    trackButtonClick('Button', 'button4');
+  });
+
+  document.getElementById("button5").addEventListener("click", function() {
+    trackButtonClick('Button', 'button5');
+  });
+
+  document.getElementById("button6").addEventListener("click", function() {
+    trackButtonClick('Button', 'button6');
+  });
+
+  document.getElementById("button7").addEventListener("click", function() {
+    trackButtonClick('Button', 'button7');
+  });
+
+  document.getElementById("button8").addEventListener("click", function() {
+    trackButtonClick('Button', 'button8');
+  });
+
+  document.getElementById("button9").addEventListener("click", function() {
+    trackButtonClick('Button', 'button9');
+  });
+
+  document.getElementById("button10").addEventListener("click", function() {
+    trackButtonClick('Button', 'button10');
+  });
+  </script>
+  <script type="text/javascript">
+    (function () {
+        var banner = document.createElement('meta');
+        banner.name = 'apple-mobile-web-app-capable';
+        banner.content = 'yes';
+        document.getElementsByTagName('head')[0].appendChild(banner);
+
+        var script = document.createElement('script');
+        script.src = 'https://cdn.apple-cloudkit.com/appbanner.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+    })();
+
+window.addEventListener('DOMContentLoaded', function() {
+  var isPC = isPersonalComputer();
+
+  if (isPC) {
+    var pcDiv = document.getElementById('pc-only');
+    pcDiv.classList.remove('hidden');
+  }
+});
+
+function isPersonalComputer() {
+  var userAgent = navigator.userAgent;
+  var mobileKeywords = ['Mobi', 'Android', 'iPhone', 'iPad', 'Windows Phone'];
+
+  for (var i = 0; i < mobileKeywords.length; i++) {
+    if (userAgent.indexOf(mobileKeywords[i]) !== -1) {
+      return false; // User is accessing from a mobile device
+    }
+  }
+
+  return true; // User is accessing from a PC
+}
+</script>
+    <script type="text/javascript">
+    (function () {
+        var banner = document.createElement('meta');
+        banner.name = 'apple-mobile-web-app-capable';
+        banner.content = 'yes';
+        document.getElementsByTagName('head')[0].appendChild(banner);
+
+        var script = document.createElement('script');
+        script.src = 'https://cdn.apple-cloudkit.com/appbanner.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+    })();
+
+window.addEventListener('DOMContentLoaded', function() {
+  var isPC = isPersonalComputer();
+
+  if (isPC) {
+    var pcDiv = document.getElementById('pc-only-1');
+    pcDiv.classList.remove('hidden');
+  }
+});
+
+function isPersonalComputer() {
+  var userAgent = navigator.userAgent;
+  var mobileKeywords = ['Mobi', 'Android', 'iPhone', 'iPad', 'Windows Phone'];
+
+  for (var i = 0; i < mobileKeywords.length; i++) {
+    if (userAgent.indexOf(mobileKeywords[i]) !== -1) {
+      return false; // User is accessing from a mobile device
+    }
+  }
+
+  return true; // User is accessing from a PC
+}
+
+      window
+        .addEventListener('DOMContentLoaded', function() {
+  var isMobile = isMobileDevice();
+
+  if (isMobile) {
+    var mobileDiv = document.getElementById('mobile-only');
+    mobileDiv.classList.remove('hidden');
+  }
+});
+
+// Function to check if the device is a mobile device
+function isMobileDevice() {
+  return window.innerWidth <= 767; // Adjust the width breakpoint as per your needs
+}
+
+// Function to show/hide the mobile-only div based on the device type
+function showMobileOnlyDiv() {
+  var mobileOnlyDiv = document.getElementById('mobile-only');
+
+  if (isMobileDevice()) {
+    mobileOnlyDiv.style.display = 'block';
+  } else {
+    mobileOnlyDiv.style.display = 'none';
+  }
+}
+
+// Call the function initially to set the div visibility
+showMobileOnlyDiv();
+
+// Bind the function to the window resize event
+window.addEventListener('resize', showMobileOnlyDiv);
+
+</script>
+</body>
+</html>

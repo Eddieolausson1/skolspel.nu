@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spel - Forntiden</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <style>
+    /* Mobile Styles */
+    @media only screen and (max-width: 600px) {
+      header {
+        padding: 10px;
+        font-size: 18px;
+      }
+
+      nav ul li a {
+        padding: 10px;
+      }
+
+      main {
+        padding: 10px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      section {
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .game-preview img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #eee;
+      padding: 10px;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+
+    h2 {
+      color: #004e8c;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    #question-container {
+      margin-top: 20px;
+    }
+
+    #options {
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      cursor: pointer;
+    }
+
+    .option-btn:hover {
+      background-color: #eee;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #next-question-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #score {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Forntiden</h1>
+    <p id="score">Poäng: <span id="score-value"></span></p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Forntiden.</h2>
+    <p>Välj det korrekta svaret på varje fråga om forntiden.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+  <script>
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    var resultElement = document.getElementById("result");
+    var nextQuestionBtn = document.getElementById("next-question-btn");
+    var goHomeBtn = document.getElementById("go-home-btn");
+    var scoreValueElement = document.getElementById("score-value");
+
+
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    var resultElement = document.getElementById("result");
+    var nextQuestionBtn = document.getElementById("next-question-btn");
+    var goHomeBtn = document.getElementById("go-home-btn");
+    var scoreValueElement = document.getElementById("score-value");
+
+    questions = [
+      {
+        question: "Vilken period kallas för forntiden?",
+        options: ["Antiken", "Medeltiden", "Stenåldern"],
+        answer: "Stenåldern"
+      },
+      {
+        question: "Vad var den första perioden i människans historia?",
+        options: ["Bronstiden", "Järnåldern", "Stenåldern"],
+        answer: "Stenåldern"
+      },
+      {
+        question: "Vilket århundrade tillhörde bronsåldern?",
+        options: ["3000-1000 f.Kr.", "1000-500 f.Kr.", "500-1500 e.Kr."],
+        answer: "3000-1000 f.Kr."
+      },
+      {
+        question: "Vilken forntida civilisation byggde pyramiderna i Egypten?",
+        options: ["Romarriket", "Aztekerna", "Det gamla Egypten"],
+        answer: "Det gamla Egypten"
+      },
+      {
+        question: "Vad kallas den period då människan började odla mark och ha boskap?",
+        options: ["Jordbruksrevolutionen", "Industrirevolutionen", "Teknologins era"],
+        answer: "Jordbruksrevolutionen"
+      },
+      // Fortsätt lägga till fler frågor på samma sätt
+      {
+        question: "Vad kallas den period då människan upptäckte elden och började använda den?",
+        options: ["Stenåldern", "Bronstiden", "Eldåldern"],
+        answer: "Stenåldern"
+      },
+      {
+        question: "Vilken forntida civilisation byggde den kinesiska muren?",
+        options: ["Romarriket", "Mayaindianerna", "Det antika Kina"],
+        answer: "Det antika Kina"
+      },
+      {
+        question: "Vilket århundrade tillhörde vikingatiden?",
+        options: ["700-1000 e.Kr.", "1000-1500 e.Kr.", "1500-1800 e.Kr."],
+        answer: "700-1000 e.Kr."
+      },
+      {
+        question: "Vilket forntida rike erövrades av Alexander den store?",
+        options: ["Romarriket", "Perserriket", "Det antika Grekland"],
+        answer: "Perserriket"
+      },
+      {
+        question: "Vilken period kallas för medeltiden?",
+        options: ["300-900 e.Kr.", "900-1400 e.Kr.", "1400-1800 e.Kr."],
+        answer: "900-1400 e.Kr."
+      }
+    ];
+
+    var questionCount = 10;
+    var selectedQuestions = getRandomQuestions(questions, questionCount);
+    var currentQuestionIndex = 0;
+    var currentQuestion = selectedQuestions[currentQuestionIndex];
+    var score = 0;
+
+    // Visa den aktuella frågan
+    showQuestion();
+    updateScore();
+
+    // Visa nästa fråga när spelaren klickar på "Nästa fråga"-knappen
+    function nextQuestion() {
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < questionCount) {
+        currentQuestion = selectedQuestions[currentQuestionIndex];
+        showQuestion();
+        nextQuestionBtn.style.display = "none";
+        resultElement.textContent = "";
+      } else {
+        endGame();
+      }
+    }
+
+    // Visa den aktuella frågan
+    function showQuestion() {
+      questionElement.textContent = currentQuestion.question;
+      optionsElement.innerHTML = "";
+
+      for (var i = 0; i < currentQuestion.options.length; i++) {
+        var optionBtn = document.createElement("button");
+        optionBtn.classList.add("option-btn");
+        optionBtn.textContent = currentQuestion.options[i];
+        optionBtn.setAttribute("onclick", "checkAnswer(this)");
+        optionsElement.appendChild(optionBtn);
+      }
+    }
+
+    // Kontrollera om spelarens svar är korrekt
+    function checkAnswer(selectedOption) {
+      var playerAnswer = selectedOption.textContent;
+
+      if (playerAnswer === currentQuestion.answer) {
+        selectedOption.classList.add("correct");
+        resultElement.textContent = "Rätt svar!";
+        score++;
+        updateScore();
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultElement.textContent = "Fel svar!";
+      }
+
+      // Inaktivera alla svarsalternativ
+      var optionBtns = document.getElementsByClassName("option-btn");
+      for (var i = 0; i < optionBtns.length; i++) {
+        optionBtns[i].setAttribute("disabled", "disabled");
+      }
+
+      // Visa "Nästa fråga"-knappen
+      nextQuestionBtn.style.display = "block";
+    }
+
+    // Uppdatera poängen
+    function updateScore() {
+      scoreValueElement.textContent = score;
+    }
+
+    // Avsluta spelet
+    function endGame() {
+      questionElement.textContent = "Spelet är slut!";
+      optionsElement.innerHTML = "";
+      resultElement.textContent = "Din totala poäng är " + score + " av " + questionCount;
+      nextQuestionBtn.style.display = "none";
+      goHomeBtn.style.display = "block";
+    }
+
+    // Gå tillbaka till hemskärmen
+    function goHome() {
+      window.location.href = "index.html";
+    }
+
+    // Hämta slumpmässiga frågor från en given frågelista
+    function getRandomQuestions(questionList, count) {
+      var randomQuestions = [];
+
+      while (randomQuestions.length < count) {
+        var randomIndex = Math.floor(Math.random() * questionList.length);
+        var randomQuestion = questionList[randomIndex];
+
+        if (!randomQuestions.includes(randomQuestion)) {
+          randomQuestions.push(randomQuestion);
+        }
+      }
+
+      return randomQuestions;
+    }
+  </script>
+</body>
+</html>

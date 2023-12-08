@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Page</title>
+    <style>
+        body {
+            text-align: center;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Index Page</h1>
+
+    <script>
+        // Retrieve the user's name from the query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const userName = urlParams.get('userName');
+
+        // Display the user's name on the page
+        if (userName) {
+            document.body.innerHTML += '<p>Hello, ' + decodeURIComponent(userName) + '!</p>';
+        }
+    </script>
+</body>
+</html>

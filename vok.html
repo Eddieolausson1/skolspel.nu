@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Frågespel - Vokaler</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      padding: 8px;
+    }
+
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+
+    h2 {
+      color: #004e8c;
+    }
+
+    #question-container {
+      margin-top: 20px;
+    }
+
+    .option-btn {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      cursor: pointer;
+    }
+
+    .option-btn:hover {
+      background-color: #eee;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #next-question-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Frågespel - Vokaler</h1>
+    <a href="/">Hem</a>
+  </header>
+  <main>
+    <h2>Vokaler</h2>
+    <div id="question-container">
+      <p id="question"></p>
+      <button class="option-btn" onclick="checkAnswer(true)" id="option-true">Ja</button>
+      <button class="option-btn" onclick="checkAnswer(false)" id="option-false">Nej</button>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+    </div>
+  </main>
+<script>
+  var questionElement = document.getElementById("question");
+  var resultElement = document.getElementById("result");
+  var nextQuestionBtn = document.getElementById("next-question-btn");
+  var optionTrueBtn = document.getElementById("option-true");
+  var optionFalseBtn = document.getElementById("option-false");
+
+  var questions = [
+    {
+      question: "Är 'Y' en vokal?"
+    },
+    {
+      question: "Är 'A' en vokal?"
+    },
+    {
+      question: "Är 'E' en vokal?"
+    },
+    {
+      question: "Är 'O' en vokal?"
+    },
+    {
+      question: "Är 'B' en vokal?"
+    },
+    {
+      question: "Är 'I' en vokal?"
+    },
+    {
+      question: "Är 'U' en vokal?"
+    },
+    {
+      question: "Är 'D' en vokal?"
+    },
+    {
+      question: "Är 'X' en vokal?"
+    },
+    {
+      question: "Är 'F' en vokal?"
+    }
+  ];
+
+  var answers = [
+    false,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    false,
+    false,
+    false
+  ];
+
+  var currentQuestionIndex = 0;
+
+  function showQuestion() {
+    var currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    resultElement.textContent = "";
+    nextQuestionBtn.style.display = "none";
+    optionTrueBtn.disabled = false;
+    optionFalseBtn.disabled = false;
+  }
+
+  function checkAnswer(userAnswer) {
+    var currentAnswer = answers[currentQuestionIndex];
+
+    optionTrueBtn.disabled = true;
+    optionFalseBtn.disabled = true;
+
+    if (userAnswer === currentAnswer) {
+      resultElement.textContent = "Rätt svar!";
+      resultElement.className = "correct";
+    } else {
+      resultElement.textContent = "Fel svar!";
+      resultElement.className = "incorrect";
+    }
+
+    nextQuestionBtn.style.display = "block";
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex === questions.length) {
+      showResult();
+    } else {
+      showQuestion();
+    }
+  }
+
+  function showResult() {
+    questionElement.textContent = "Grattis! Du har svarat på alla frågor.";
+    resultElement.textContent = "";
+    nextQuestionBtn.style.display = "none";
+    optionTrueBtn.style.display = "none";
+    optionFalseBtn.style.display = "none";
+  }
+
+  showQuestion();
+</script>
+</body>
+</html>

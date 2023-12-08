@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Gissa Längdenheter (mm, cm, dm, m och km)</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    
+    /* Header Styles */
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+    }
+    
+    header h1 {
+      margin: 0;
+    }
+    
+    /* Navigation Styles */
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #eee;
+      padding: 10px;
+    }
+    
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    
+    /* Main Styles */
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+    
+    h2 {
+      color: #004e8c;
+    }
+    
+    p {
+      margin-top: 0;
+    }
+    
+    /* Quiz Styles */
+    #question-container {
+      margin-top: 20px;
+    }
+    
+    #options {
+      margin-top: 10px;
+    }
+    
+    .option-btn {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      cursor: pointer;
+    }
+    
+    .option-btn:hover {
+      background-color: #eee;
+    }
+    
+    .correct {
+      background-color: green;
+      color: white;
+    }
+    
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+    
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    
+    #next-question-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    #score {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Gissa Längdenheter (mm, cm, dm, m och km)</h1>
+    <p id="score">Poäng: <span id="score-value"></span></p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Gissa Längdenheter (mm, cm, dm, m och km)</h2>
+    <p>Välj rätt enhet för varje angiven längd.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+  <script>
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    var resultElement = document.getElementById("result");
+    var nextQuestionBtn = document.getElementById("next-question-btn");
+    var goHomeBtn = document.getElementById("go-home-btn");
+    var scoreValueElement = document.getElementById("score-value");
+
+var questions = [
+  {
+    question: "Vad motsvarar 100 centimeter i millimeter?",
+    options: ["10 millimeter", "100 millimeter", "1000 millimeter", "10000 millimeter", "100000 millimeter"],
+    answer: "1000 millimeter"
+  },
+  {
+    question: "Vad motsvarar 5 meter i centimeter?",
+    options: ["50 centimeter", "500 centimeter", "5000 centimeter", "50000 centimeter", "500000 centimeter"],
+    answer: "500 centimeter"
+  },
+  {
+    question: "Vad motsvarar 250 decimeter i meter?",
+    options: ["2,5 meter", "25 meter", "250 meter", "2500 meter", "25000 meter"],
+    answer: "25 meter"
+  },
+  {
+    question: "Vad motsvarar 2 kilometer i meter?",
+    options: ["200 meter", "2000 meter", "20000 meter", "200000 meter", "2000000 meter"],
+    answer: "2000 meter"
+  },
+  {
+    question: "Vad motsvarar 3000 millimeter i meter?",
+    options: ["0,3 meter", "3 meter", "30 meter", "300 meter", "3000 meter"],
+    answer: "3 meter"
+  },
+  {
+    question: "Vad motsvarar 15 centimeter i millimeter?",
+    options: ["150 millimeter", "1500 millimeter", "15000 millimeter", "150000 millimeter", "1500000 millimeter"],
+    answer: "150 millimeter"
+  },
+  {
+    question: "Vad motsvarar 8 decimeter i centimeter?",
+    options: ["8 centimeter", "80 centimeter", "800 centimeter", "8000 centimeter", "80000 centimeter"],
+    answer: "80 centimeter"
+  },
+  {
+    question: "Vad motsvarar 0,5 kilometer i meter?",
+    options: ["50 meter", "500 meter", "5000 meter", "50000 meter", "500000 meter"],
+    answer: "500 meter"
+  },
+  {
+    question: "Vad motsvarar 1200 millimeter i decimeter?",
+    options: ["12 decimeter", "120 decimeter", "1200 decimeter", "12000 decimeter", "120000 decimeter"],
+    answer: "120 decimeter"
+  },
+  {
+    question: "Vad motsvarar 3 meter i kilometer?",
+    options: ["0,003 kilometer", "0,03 kilometer", "0,3 kilometer", "3 kilometer", "30 kilometer"],
+    answer: "0,003 kilometer"
+  }
+];
+
+
+    var questionCount = 5; // Number of questions to display
+    var selectedQuestions = getRandomQuestions(questions, questionCount);
+    var currentQuestionIndex = 0;
+    var currentQuestion = selectedQuestions[currentQuestionIndex];
+    var score = 0;
+
+    // Display the current question
+    showQuestion();
+    updateScore();
+
+    // Show the next question when the player clicks the "Next Question" button
+    function nextQuestion() {
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < questionCount) {
+        currentQuestion = selectedQuestions[currentQuestionIndex];
+        showQuestion();
+        nextQuestionBtn.style.display = "none";
+        resultElement.textContent = "";
+      } else {
+        endGame();
+      }
+    }
+
+    // Display the current question
+    function showQuestion() {
+      questionElement.textContent = currentQuestion.question;
+      optionsElement.innerHTML = "";
+
+      for (var i = 0; i < currentQuestion.options.length; i++) {
+        var optionBtn = document.createElement("button");
+        optionBtn.classList.add("option-btn");
+        optionBtn.textContent = currentQuestion.options[i];
+        optionBtn.setAttribute("onclick", "checkAnswer(this)");
+        optionsElement.appendChild(optionBtn);
+      }
+    }
+
+    // Check the answer when the player clicks on an option
+    function checkAnswer(btn) {
+      var playerAnswer = btn.textContent;
+
+      if (playerAnswer === currentQuestion.answer) {
+        btn.classList.add("correct");
+        resultElement.textContent = "Rätt svar!";
+        resultElement.style.color = "green";
+        score++;
+        updateScore();
+      } else {
+        btn.classList.add("incorrect");
+        resultElement.textContent = "Fel svar. Det korrekta svaret var: " + currentQuestion.answer;
+        resultElement.style.color = "red";
+      }
+
+      // Disable all options
+      var optionButtons = optionsElement.getElementsByClassName("option-btn");
+      for (var i = 0; i < optionButtons.length; i++) {
+        optionButtons[i].disabled = true;
+      }
+
+      // Show the "Next Question" button
+      nextQuestionBtn.style.display = "block";
+    }
+
+    // Update the score display
+    function updateScore() {
+      scoreValueElement.textContent = score;
+    }
+
+    // Get random questions from the list of available questions
+    function getRandomQuestions(questions, count) {
+      var shuffled = questions.sort(function() { return 0.5 - Math.random(); });
+      return shuffled.slice(0, count);
+    }
+
+    // End the game and display the final score
+    function endGame() {
+      questionElement.textContent = "Spelet är slut. Din slutpoäng är " + score + " av " + questionCount;
+      optionsElement.innerHTML = "";
+      resultElement.textContent = "";
+      nextQuestionBtn.style.display = "none";
+      goHomeBtn.style.display = "block";
+    }
+
+    // Go back to the home screen
+    function goHome() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

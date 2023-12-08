@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Gissa Viktenheter (kg, hg och g)</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    
+    /* Header Styles */
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+    }
+    
+    header h1 {
+      margin: 0;
+    }
+    
+    /* Navigation Styles */
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #eee;
+      padding: 10px;
+    }
+    
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    
+    /* Main Styles */
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+    
+    h2 {
+      color: #004e8c;
+    }
+    
+    p {
+      margin-top: 0;
+    }
+    
+    /* Quiz Styles */
+    #question-container {
+      margin-top: 20px;
+    }
+    
+    #options {
+      margin-top: 10px;
+    }
+    
+    .option-btn {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      cursor: pointer;
+    }
+    
+    .option-btn:hover {
+      background-color: #eee;
+    }
+    
+    .correct {
+      background-color: green;
+      color: white;
+    }
+    
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+    
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    
+    #next-question-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    #score {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Gissa Viktenheter (kg, hg och g)</h1>
+    <p id="score">Poäng: <span id="score-value"></span></p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Gissa Viktenheter (kg, hg och g)</h2>
+    <p>Välj rätt enhet för varje angiven vikt.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+  <script>
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    var resultElement = document.getElementById("result");
+    var nextQuestionBtn = document.getElementById("next-question-btn");
+    var goHomeBtn = document.getElementById("go-home-btn");
+    var scoreValueElement = document.getElementById("score-value");
+
+    var questions = [
+      {
+        question: "Vad motsvarar 1000 gram i kilogram?",
+        options: ["1 kilogram", "10 kilogram", "100 kilogram", "1000 kilogram", "10000 kilogram"],
+        answer: "1 kilogram"
+      },
+      {
+        question: "Vad motsvarar 5000 gram i kilogram?",
+        options: ["0.5 kilogram", "5 kilogram", "50 kilogram", "500 kilogram", "5000 kilogram"],
+        answer: "5 kilogram"
+      },
+      {
+        question: "Vad motsvarar 2 ton i kilogram?",
+        options: ["200 kilogram", "2000 kilogram", "20000 kilogram", "200000 kilogram", "2000000 kilogram"],
+        answer: "2000 kilogram"
+      },
+      {
+        question: "Vad motsvarar 500 gram i hekto?",
+        options: ["5 hekto", "50 hekto", "500 hekto", "5000 hekto", "50000 hekto"],
+        answer: "5 hekto"
+      },
+      {
+        question: "Vad motsvarar 2500 gram i gram?",
+        options: ["0.25 gram", "2.5 gram", "25 gram", "250 gram", "2500 gram"],
+        answer: "2500 gram"
+      },
+      {
+        question: "Vad motsvarar 750 gram i hekto?",
+        options: ["7.5 hekto", "75 hekto", "750 hekto", "7500 hekto", "75000 hekto"],
+        answer: "7.5 hekto"
+      },
+      {
+        question: "Vad motsvarar 3 ton i kilogram?",
+        options: ["300 kilogram", "3000 kilogram", "30000 kilogram", "300000 kilogram", "3000000 kilogram"],
+        answer: "3000 kilogram"
+      },
+      {
+        question: "Vad motsvarar 0.25 kilogram i gram?",
+        options: ["0.025 gram", "0.25 gram", "2.5 gram", "25 gram", "250 gram"],
+        answer: "250 gram"
+      },
+      {
+        question: "Vad motsvarar 10000 gram i kilogram?",
+        options: ["10 kilogram", "100 kilogram", "1000 kilogram", "10000 kilogram", "100000 kilogram"],
+        answer: "10 kilogram"
+      },
+      {
+        question: "Vad motsvarar 5 hekto i gram?",
+        options: ["0.5 gram", "5 gram", "50 gram", "500 gram", "5000 gram"],
+        answer: "500 gram"
+      }
+    ];
+
+    var currentQuestionIndex = 0;
+    var score = 0;
+
+    function startGame() {
+      score = 0;
+      currentQuestionIndex = 0;
+      displayQuestion();
+      hideButtons();
+      resultElement.innerHTML = "";
+      scoreValueElement.innerHTML = score;
+    }
+
+    function displayQuestion() {
+      var currentQuestion = questions[currentQuestionIndex];
+      questionElement.innerHTML = currentQuestion.question;
+
+      optionsElement.innerHTML = "";
+      for (var i = 0; i < currentQuestion.options.length; i++) {
+        var option = document.createElement("button");
+        option.classList.add("option-btn");
+        option.innerHTML = currentQuestion.options[i];
+        option.onclick = evaluateAnswer;
+        optionsElement.appendChild(option);
+      }
+    }
+
+    function evaluateAnswer(event) {
+      var selectedOption = event.target;
+      var selectedAnswer = selectedOption.innerHTML;
+      var currentQuestion = questions[currentQuestionIndex];
+      if (selectedAnswer === currentQuestion.answer) {
+        selectedOption.classList.add("correct");
+        resultElement.innerHTML = "Rätt svar!";
+        score++;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultElement.innerHTML = "Fel svar. Det korrekta svaret är: " + currentQuestion.answer;
+      }
+
+      disableOptions();
+      showButtons();
+      scoreValueElement.innerHTML = score;
+    }
+
+    function disableOptions() {
+      var options = optionsElement.children;
+      for (var i = 0; i < options.length; i++) {
+        options[i].disabled = true;
+      }
+    }
+
+    function showButtons() {
+      nextQuestionBtn.style.display = "block";
+      goHomeBtn.style.display = "block";
+    }
+
+    function hideButtons() {
+      nextQuestionBtn.style.display = "none";
+      goHomeBtn.style.display = "none";
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+        hideButtons();
+        resultElement.innerHTML = "";
+      } else {
+        endGame();
+      }
+    }
+
+    function endGame() {
+      questionElement.innerHTML = "Spelet är slut!";
+      optionsElement.innerHTML = "";
+      resultElement.innerHTML = "Ditt slutresultat är " + score + " av " + questions.length + " möjliga poäng.";
+      hideButtons();
+    }
+
+    function goHome() {
+      questionElement.innerHTML = "";
+      optionsElement.innerHTML = "";
+      resultElement.innerHTML = "";
+      hideButtons();
+    }
+
+    startGame();
+  </script>
+</body>
+</html>

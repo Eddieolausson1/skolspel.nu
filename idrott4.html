@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Kost och Hälsa</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+  background-color: #004e8c;
+  padding: 20px;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: #eee;
+  padding: 10px;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+main {
+  background-color: white;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+h2 {
+  color: #004e8c;
+}
+
+p {
+  margin-top: 0;
+}
+
+#question-container {
+  margin-top: 20px;
+}
+
+#options {
+  margin-top: 10px;
+}
+
+.option-btn {
+  display: block;
+  margin-bottom: 5px;
+  padding: 8px;
+  font-size: 16px;
+  width: 200px;
+  cursor: pointer;
+}
+
+.option-btn:hover {
+  background-color: #eee;
+}
+
+.correct {
+  background-color: green;
+  color: white;
+}
+
+.incorrect {
+  background-color: red;
+  color: white;
+}
+
+#result {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#next-question-btn {
+  display: none;
+  margin-top: 10px;
+  background-color: #004e8c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#go-home-btn {
+  display: none;
+  margin-top: 10px;
+  background-color: #004e8c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#score {
+  margin-bottom: 10px;
+}
+ </style>
+</head>
+<body>
+  <header>
+    <h1>Spel - Kost och Hälsa</h1>
+    <p id="score">Poäng: <span id="score-value"></span></p>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Hem</a></li>
+      <li><a href="om-oss.html">Om oss</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Kost och Hälsa</h2>
+    <p>Välj det korrekta svaret på varje fråga om Kost och Hälsa.</p>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+      <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+      <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+    </div>
+  </main>
+<script>
+  var questionElement = document.getElementById("question");
+  var optionsElement = document.getElementById("options");
+  var resultElement = document.getElementById("result");
+  var nextQuestionBtn = document.getElementById("next-question-btn");
+  var goHomeBtn = document.getElementById("go-home-btn");
+  var scoreValueElement = document.getElementById("score-value");
+
+var questions = [
+  {
+    question: "Vilken näringsgrupp är kroppens främsta energikälla?",
+    options: ["Protein", "Fett", "Kolhydrater"],
+    answer: "Kolhydrater"
+  },
+  {
+    question: "Vilken vitamin bildas naturligt i huden när den utsätts för solljus?",
+    options: ["Vitamin A", "Vitamin C", "Vitamin D"],
+    answer: "Vitamin D"
+  },
+  {
+    question: "Vilken mineral är viktig för att upprätthålla en stark benstruktur?",
+    options: ["Kalcium", "Magnesium", "Järn"],
+    answer: "Kalcium"
+  },
+  {
+    question: "Vad är en antioxidant?",
+    options: ["En typ av vitamin", "En typ av mineral", "En förening som hjälper till att skydda cellerna mot skador"],
+    answer: "En förening som hjälper till att skydda cellerna mot skador"
+  },
+  {
+    question: "Vilken matkälla är en bra källa till omega-3-fettsyror?",
+    options: ["Nötkött", "Avokado", "Lax"],
+    answer: "Lax"
+  },
+  {
+    question: "Vilken typ av fett anses vara mest hälsosamt att konsumera?",
+    options: ["Mättat fett", "Enkelomättat fett", "Fleromättat fett"],
+    answer: "Enkelomättat fett"
+  },
+  {
+    question: "Vilken komponent utgör den största delen av kroppens vikt?",
+    options: ["Vatten", "Protein", "Fett"],
+    answer: "Vatten"
+  },
+  {
+    question: "Vad är rekommenderad daglig intag av frukt och grönsaker för vuxna enligt kostråden?",
+    options: ["2-3 portioner", "4-5 portioner", "6-7 portioner"],
+    answer: "6-7 portioner"
+  },
+  {
+    question: "Vilken typ av mat är en bra källa till fiber?",
+    options: ["Vit pasta", "Vit ris", "Fullkornsbröd"],
+    answer: "Fullkornsbröd"
+  },
+  {
+    question: "Vad är rekommenderat dagligt intag av vatten för vuxna?",
+    options: ["1 liter", "2 liter", "3 liter"],
+    answer: "2 liter"
+  }
+];
+
+
+  var questionCount = 10;
+  var selectedQuestions = getRandomQuestions(questions, questionCount);
+  var currentQuestionIndex = 0;
+  var currentQuestion = selectedQuestions[currentQuestionIndex];
+  var score = 0;
+
+  // Visa den aktuella frågan
+  showQuestion();
+  updateScore();
+
+  // Visa nästa fråga när spelaren klickar på "Nästa fråga"-knappen
+  function nextQuestion() {
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questionCount) {
+      currentQuestion = selectedQuestions[currentQuestionIndex];
+      showQuestion();
+      nextQuestionBtn.style.display = "none";
+      resultElement.textContent = "";
+    } else {
+      endGame();
+    }
+  }
+
+  // Visa den aktuella frågan
+  function showQuestion() {
+    questionElement.textContent = currentQuestion.question;
+    optionsElement.innerHTML = "";
+
+    for (var i = 0; i < currentQuestion.options.length; i++) {
+      var optionBtn = document.createElement("button");
+      optionBtn.classList.add("option-btn");
+      optionBtn.textContent = currentQuestion.options[i];
+      optionBtn.setAttribute("onclick", "checkAnswer(this)");
+      optionsElement.appendChild(optionBtn);
+    }
+  }
+
+  // Kontrollera svaret när spelaren klickar på ett svarsalternativ
+  function checkAnswer(btn) {
+    var playerAnswer = btn.textContent;
+
+    if (playerAnswer === currentQuestion.answer) {
+      btn.classList.add("correct");
+      resultElement.textContent = "Rätt svar!";
+      resultElement.style.color = "green";
+      score++;
+      updateScore();
+    } else {
+      btn.classList.add("incorrect");
+      resultElement.textContent = "Fel svar. Det korrekta svaret var: " + currentQuestion.answer;
+      resultElement.style.color = "red";
+    }
+
+    // Inaktivera alla svarsalternativ
+    var optionButtons = optionsElement.getElementsByClassName("option-btn");
+    for (var i = 0; i < optionButtons.length; i++) {
+      optionButtons[i].disabled = true;
+    }
+
+    nextQuestionBtn.style.display = "block";
+  }
+
+  // Avsluta spelet och visa resultatet
+  function endGame() {
+    questionElement.textContent = "Spelet är klart!";
+    resultElement.textContent = "Du fick " + score + " av " + questionCount + " rätt.";
+    optionsElement.innerHTML = "";
+    nextQuestionBtn.style.display = "none";
+    goHomeBtn.style.display = "block";
+  }
+
+  // Uppdatera poängvärdet
+  function updateScore() {
+    scoreValueElement.textContent = score;
+  }
+
+  // Gå tillbaka till hemskärmen
+  function goHome() {
+    window.location.href = "index.html";
+  }
+
+  // Funktion för att välja slumpmässiga frågor
+  function getRandomQuestions(allQuestions, count) {
+    var randomQuestions = [];
+    var questionIndexes = [];
+    var totalQuestions = allQuestions.length;
+
+    if (count > totalQuestions) {
+      count = totalQuestions;
+    }
+
+    while (questionIndexes.length < count) {
+      var randomIndex = Math.floor(Math.random() * totalQuestions);
+      if (!questionIndexes.includes(randomIndex)) {
+        questionIndexes.push(randomIndex);
+        randomQuestions.push(allQuestions[randomIndex]);
+      }
+    }
+
+    return randomQuestions;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Python Quiz</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #004e8c;
+      padding: 20px;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: #eee;
+      padding: 10px;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    main {
+      background-color: white;
+      padding: 20px;
+      margin-top: 10px;
+    }
+
+    h2 {
+      color: #004e8c;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    #question-container {
+      margin-top: 20px;
+    }
+
+    #options {
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      display: block;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+      cursor: pointer;
+    }
+
+    .option-btn:hover {
+      background-color: #eee;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #next-question-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #go-home-btn {
+      display: none;
+      margin-top: 10px;
+      background-color: #004e8c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #score {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Spel - Python Quiz</h1>
+  <p id="score">Poäng: <span id="score-value"></span></p>
+</header>
+<nav>
+  <ul>
+    <li><a href="index.html">Hem</a></li>
+    <li><a href="spel.html">Spel</a></li>
+    <li><a href="om-oss.html">Om oss</a></li>
+  </ul>
+</nav>
+<main>
+  <h2>Python Quiz</h2>
+  <p>Välj det korrekta svaret på varje fråga om Python.</p>
+  <div id="question-container">
+    <p id="question"></p>
+    <div id="options"></div>
+    <p id="result"></p>
+    <button id="next-question-btn" onclick="nextQuestion()">Nästa fråga</button>
+    <button id="go-home-btn" onclick="goHome()">Gå till hemskärmen</button>
+  </div>
+</main>
+<script>
+  var questionElement = document.getElementById("question");
+  var optionsElement = document.getElementById("options");
+  var resultElement = document.getElementById("result");
+  var nextQuestionBtn
+
+ = document.getElementById("next-question-btn");
+  var goHomeBtn = document.getElementById("go-home-btn");
+  var scoreValueElement = document.getElementById("score-value");
+
+  var questions = [
+    {
+      question: "Vad är Python?",
+      options: ["Ett programmeringsspråk", "En orm", "En spindel"],
+      answer: "Ett programmeringsspråk"
+    },
+    {
+      question: "Vem skapade Python?",
+      options: ["Guido van Rossum", "Bill Gates", "Mark Zuckerberg"],
+      answer: "Guido van Rossum"
+    },
+    {
+      question: "Vilken är den senaste versionen av Python?",
+      options: ["Python 3", "Python 2", "Python 4"],
+      answer: "Python 3"
+    },
+    {
+      question: "Vilket av följande är inte en datatyp i Python?",
+      options: ["Integer", "Boolean", "Floatpoint"],
+      answer: "Floatpoint"
+    },
+    {
+      question: "Vilket nyckelord används för att definiera en funktion i Python?",
+      options: ["def", "function", "define"],
+      answer: "def"
+    },
+    {
+      question: "Vad används dubbla citattecken ('') för i Python?",
+      options: ["För att definiera en sträng", "För att definiera en siffra", "För att definiera en lista"],
+      answer: "För att definiera en sträng"
+    },
+    {
+      question: "Vad är en lista i Python?",
+      options: ["En samling av värden", "En funktion", "En klass"],
+      answer: "En samling av värden"
+    },
+    {
+      question: "Vilket tecken används för att kommentera en rad i Python?",
+      options: ["#", "//", "*"],
+      answer: "#"
+    },
+    {
+      question: "Vilken funktion används för att läsa inmatning från användaren i Python?",
+      options: ["input()", "read()", "get_input()"],
+      answer: "input()"
+    },
+    {
+      question: "Vad returnerar len() funktionen i Python?",
+      options: ["Antalet element i en sekvens", "Summan av två tal", "Medelvärdet av en lista"],
+      answer: "Antalet element i en sekvens"
+    }
+  ];
+
+  var questionCount = 10;
+  var selectedQuestions = getRandomQuestions(questions, questionCount);
+  var currentQuestionIndex = 0;
+  var currentQuestion = selectedQuestions[currentQuestionIndex];
+  var score = 0;
+
+  // Visa den aktuella frågan
+  showQuestion();
+  updateScore();
+
+  // Visa nästa fråga när spelaren klickar på "Nästa fråga"-knappen
+  function nextQuestion() {
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questionCount) {
+      currentQuestion = selectedQuestions[currentQuestionIndex];
+      showQuestion();
+      nextQuestionBtn.style.display = "none";
+      resultElement.textContent = "";
+    } else {
+      endGame();
+    }
+  }
+
+  // Visa den aktuella frågan
+  function showQuestion() {
+    questionElement.textContent = currentQuestion.question;
+    optionsElement.innerHTML = "";
+
+    for (var i = 0; i < currentQuestion.options.length; i++) {
+      var optionBtn = document.createElement("button");
+      optionBtn.classList.add("option-btn");
+      optionBtn.textContent = currentQuestion.options[i
+
+];
+      optionBtn.onclick = selectAnswer;
+      optionsElement.appendChild(optionBtn);
+    }
+  }
+
+  // Hantera klick på svarsalternativet
+  function selectAnswer(event) {
+    var selectedOption = event.target;
+    var selectedAnswer = selectedOption.textContent;
+
+    if (selectedAnswer === currentQuestion.answer) {
+      selectedOption.classList.add("correct");
+      resultElement.textContent = "Rätt svar!";
+      score++;
+    } else {
+      selectedOption.classList.add("incorrect");
+      resultElement.textContent = "Fel svar!";
+    }
+
+    disableOptions();
+    nextQuestionBtn.style.display = "block";
+    updateScore();
+  }
+
+  // Inaktivera svarsalternativen efter att spelaren har valt ett svar
+  function disableOptions() {
+    var optionButtons = optionsElement.getElementsByClassName("option-btn");
+
+    for (var i = 0; i < optionButtons.length; i++) {
+      optionButtons[i].disabled = true;
+
+      if (optionButtons[i].textContent === currentQuestion.answer) {
+        optionButtons[i].classList.add("correct");
+      }
+    }
+  }
+
+  // Uppdatera poängen
+  function updateScore() {
+    scoreValueElement.textContent = score;
+  }
+
+  // Avsluta spelet och visa resultatet
+  function endGame() {
+    questionElement.textContent = "Spelet är slut!";
+    optionsElement.innerHTML = "";
+    resultElement.textContent = "Du fick " + score + " av " + questionCount + " rätt svar.";
+
+    nextQuestionBtn.style.display = "none";
+    goHomeBtn.style.display = "block";
+  }
+
+  // Gå tillbaka till hemskärmen
+  function goHome() {
+    window.location.href = "index.html";
+  }
+
+  // Funktion för att slumpmässigt välja frågor från en lista
+  function getRandomQuestions(questions, count) {
+    var shuffledQuestions = questions.sort(function () { return 0.5 - Math.random(); });
+    return shuffledQuestions.slice(0, count);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="351827595939-j2qp2n84p10662b9apa546rqm2al6not.apps.googleusercontent.com">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Logga In</h1>
+    <div class="container">
+        <button onclick="signInWithGoogle()">Sign in with Google</button>
+    </div>
+
+    <script>
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            var userName = profile.getName();
+
+            // Display the user's name on the page
+            alert('Welcome, ' + userName);
+        }
+
+        function signInWithGoogle() {
+            if (gapi.auth2) {
+                gapi.auth2.getAuthInstance().signIn().then(onSignIn);
+            } else {
+                console.error('Google API not initialized.');
+            }
+        }
+
+        function signOut() {
+            if (gapi.auth2) {
+                gapi.auth2.getAuthInstance().signOut().then(function () {
+                    alert('User signed out.');
+                });
+            } else {
+                console.error('Google API not initialized.');
+            }
+        }
+
+        function init() {
+            gapi.load('auth2', function () {
+                gapi.auth2.init({
+                    client_id: '351827595939-j2qp2n84p10662b9apa546rqm2al6not.apps.googleusercontent.com',
+                }).then(function () {
+                    console.log('Google API initialized.');
+                });
+            });
+        }
+
+        // Ensure the Google API is loaded before attempting to initialize
+        if (window.gapi) {
+            init();
+        } else {
+            // If not, wait for the window.gapi to be available
+            window.addEventListener('load', init);
+        }
+    </script>
+</body>
+</html>

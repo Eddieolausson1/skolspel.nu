@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Student Dashboard</title>
+  <meta charset="UTF-8">
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .container h2 {
+      text-align: center;
+    }
+
+    .container p {
+      margin-bottom: 10px;
+    }
+
+    .container button[type="button"] {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .container button[type="button"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Välkommen till elevdashboard</h2>
+    <p>Här kan du se dina uppgifter och resultat.</p>
+    
+    <div id="message"></div>
+
+    <!-- Add your student dashboard content here -->
+
+    <button type="button" onclick="logout()">Logga ut</button>
+  </div>
+
+  <script>
+    // Retrieve the message from local storage and display it
+    var message = localStorage.getItem("message");
+    var messageElement = document.getElementById("message");
+    if (message) {
+      messageElement.textContent = message;
+    }
+
+    function logout() {
+      // Perform any logout actions or session management here
+      window.location.href = "login.html"; // Redirect to the login page
+    }
+  </script>
+</body>
+</html>

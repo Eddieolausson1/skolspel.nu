@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<link rel="icon" href="logo.png" type="image/png">
+<html>
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8113027788298000"
+     crossorigin="anonymous"></script>
+  <title>Spel - Hav och Vatten</title>
+  <style>
+     /* Mobile Styles */
+  @media only screen and (max-width: 600px) {
+    header {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    nav ul li a {
+      padding: 10px;
+    }
+
+    main {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    section {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .game-preview img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  }
+    .option-btn {
+      margin-bottom: 10px;
+    }
+
+    .correct {
+      background-color: lightgreen;
+    }
+
+    .incorrect {
+      background-color: pink;
+    }
+  </style>
+</head>
+<body>
+  <h1>Spel - Hav och Vatten</h1>
+  <div id="question"></div>
+  <div id="options"></div>
+  <p id="result"></p>
+  <p>Poäng: <span id="score-value">0</span></p>
+  <button id="next-question-btn" style="display: none;" onclick="nextQuestion()">Nästa fråga</button>
+  <button id="go-home-btn" style="display: none;" onclick="goHome()">Avsluta spel</button>
+  <script>
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    var resultElement = document.getElementById("result");
+    var nextQuestionButton = document.getElementById("next-question-btn");
+    var goHomeButton = document.getElementById("go-home-btn");
+    var scoreValueElement = document.getElementById("score-value");
+
+    var questions = [
+      {
+        question: "Vad är världens största ocean?",
+        options: ["Atlanten", "Indiska oceanen", "Stilla havet"],
+        answer: "Stilla havet"
+      },
+      {
+        question: "Vilket hav omges av länderna Sverige, Finland, Estland och Ryssland?",
+        options: ["Medelhavet", "Nordatlanten", "Östersjön"],
+        answer: "Östersjön"
+      },
+      {
+        question: "Vilken flod rinner genom staden Paris?",
+        options: ["Nilen", "Rhen", "Seine"],
+        answer: "Seine"
+      },
+      {
+        question: "Vad heter vattenfallet som ligger på gränsen mellan Kanada och USA?",
+        options: ["Niagarafallen", "Angel Falls", "Iguazúfallen"],
+        answer: "Niagarafallen"
+      },
+      {
+        question: "Vilket hav omges av länderna Italien, Grekland, Turkiet och Egypten?",
+        options: ["Svarta havet", "Mittelhavet", "Persiska viken"],
+        answer: "Mittelhavet"
+      },
+      {
+        question: "Vilket hav ligger mellan Australien och Nya Zeeland?",
+        options: ["Sydkinesiska havet", "Korallhavet", "Tasmanhavet"],
+        answer: "Tasmanhavet"
+      },
+      {
+        question: "Vilket hav ligger längs den östra kusten av USA?",
+        options: ["Karibiska havet", "Adriatiska havet", "Atlanten"],
+        answer: "Atlanten"
+      },
+      {
+        question: "Vilken sjö är världens djupaste?",
+        options: ["Övre sjön", "Baikalsjön", "Titicacasjön"],
+        answer: "Baikalsjön"
+      },
+      {
+        question: "Vad heter det område där floden Nilen mynnar ut i Medelhavet?",
+        options: ["Nildeltaet", "Amazonas delta", "Indus delta"],
+        answer: "Nildeltaet"
+      },
+      {
+        question: "Vilken kontinent omges helt och hållet av vatten?",
+        options: ["Asien", "Australien", "Antarktis"],
+        answer: "Antarktis"
+      }
+    ];
+
+    var currentQuestionIndex = 0;
+    var score = 0;
+
+    function startGame() {
+      showQuestion();
+    }
+
+    function showQuestion() {
+      var currentQuestion = questions[currentQuestionIndex];
+      questionElement.textContent = currentQuestion.question;
+      optionsElement.innerHTML = "";
+
+      for (var i = 0; i < currentQuestion.options.length; i++) {
+        var option = document.createElement("button");
+        option.textContent = currentQuestion.options[i];
+        option.className = "option-btn";
+        option.setAttribute("onclick", "checkAnswer(this)");
+        optionsElement.appendChild(option);
+      }
+    }
+
+    function checkAnswer(selectedOption) {
+      var currentQuestion = questions[currentQuestionIndex];
+
+      if (selectedOption.textContent === currentQuestion.answer) {
+        selectedOption.classList.add("correct");
+        resultElement.textContent = "Rätt svar!";
+        score++;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultElement.textContent = "Fel svar! Det rätta svaret är: " + currentQuestion.answer;
+      }
+
+      disableOptions();
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < questions.length) {
+        showNextQuestionButton();
+      } else {
+        showEndGameButton();
+      }
+
+      updateScore();
+    }
+
+    function disableOptions() {
+      var options = optionsElement.children;
+      for (var i = 0; i < options.length; i++) {
+        options[i].setAttribute("disabled", "true");
+      }
+    }
+
+    function showNextQuestionButton() {
+      nextQuestionButton.style.display = "block";
+    }
+
+    function showEndGameButton() {
+      goHomeButton.style.display = "block";
+      goHomeButton.textContent = "Avsluta spel";
+    }
+
+    function updateScore() {
+      scoreValueElement.textContent = score;
+    }
+
+    function nextQuestion() {
+      clearOptions();
+      resultElement.textContent = "";
+      showQuestion();
+      hideNextQuestionButton();
+    }
+
+    function clearOptions() {
+      optionsElement.innerHTML = "";
+    }
+
+    function hideNextQuestionButton() {
+      nextQuestionButton.style.display = "none";
+    }
+
+    function endGame() {
+      questionElement.textContent = "Spelet är slut!";
+      optionsElement.innerHTML = "";
+      resultElement.textContent = "Du fick " + score + " poäng av " + questions.length;
+      goHomeButton.style.display = "block";
+      goHomeButton.textContent = "Gå till hemskärmen";
+    }
+
+    function goHome() {
+      window.location.href = "index.html";
+    }
+
+    startGame();
+  </script>
+</body>
+</html>
