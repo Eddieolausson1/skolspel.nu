@@ -6,22 +6,49 @@
     <title>Turnstile Widget Example</title>
     <!-- Cloudflare Turnstile API script -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
+    <style>
+        /* Initially hide everything except the Turnstile container */
+        #initial-content, #extra-content {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    Heres the site content!!
     <!-- Container for the Turnstile widget -->
     <div id="turnstile-container" class="cf-turnstile" data-sitekey="0x4AAAAAAAFW91L1-cQ3h4jR" data-callback="javascriptCallback">
         <h1>Please wait while we test your security.</h1>
+    </div>
+
+    <!-- Initial content to be hidden -->
+    <div id="initial-content">
+        <h2>Welcome to our website!</h2>
+        <p>This is the initial content of the page.</p>
+    </div>
+
+    <!-- Extra content to be hidden -->
+    <div id="extra-content">
+        <h2>Additional Content</h2>
+        <p>This is some extra content that should be hidden initially.</p>
     </div>
 
     <script>
         // JavaScript callback function called upon successful challenge completion
         function javascriptCallback(token) {
             console.log('Challenge Success', token);
-            // Hide the challenge container
+            // Hide the initial content
+            var initialContent = document.getElementById('initial-content');
+            if (initialContent) {
+                initialContent.style.display = 'none';
+            }
+            // Hide the extra content
+            var extraContent = document.getElementById('extra-content');
+            if (extraContent) {
+                extraContent.style.display = 'none';
+            }
+            // Display the Turnstile container
             var challengeContainer = document.getElementById('turnstile-container');
             if (challengeContainer) {
-                challengeContainer.style.display = 'none';
+                challengeContainer.style.display = 'block';
             }
             // You can perform additional actions here, such as unlocking content or submitting a form
         }
