@@ -7,7 +7,7 @@
     <!-- Cloudflare Turnstile API script -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
     <style>
-        /* Hide initial content with CSS */
+        /* Initially hide all content except the Turnstile challenge and the continue button */
         .initially-hidden {
             display: none;
         }
@@ -27,10 +27,8 @@
 
     <!-- Extra content to be hidden initially -->
     <div id="extra-content" class="initially-hidden">
-        <h2>Additional Content</h2>
-        <p>This is some extra content that should be hidden initially.</p>
         <!-- Continue button -->
-        <button onclick="showConfirmation()">Continue</button>
+        <button id="continue-button" onclick="showPageContent()">Continue</button>
     </div>
 
     <script>
@@ -50,19 +48,26 @@
             // You can perform additional actions here, such as unlocking content or submitting a form
         }
 
-        // Function to show confirmation dialog
-        function showConfirmation() {
-            var confirmation = confirm("Are you sure you want to continue?");
-            if (confirmation) {
-                // Hide the Turnstile container
-                var turnstileContainer = document.getElementById('turnstile-container');
-                if (turnstileContainer) {
-                    turnstileContainer.style.display = 'none';
-                }
-                // Continue action, for example, redirect to another page
-                window.location.href = "continue-page.html";
-            } else {
-                // Optionally, perform some other action or remain on the same page
+        // Function to show page content and hide challenge and continue button
+        function showPageContent() {
+            // Hide the Turnstile container
+            var turnstileContainer = document.getElementById('turnstile-container');
+            if (turnstileContainer) {
+                turnstileContainer.style.display = 'none';
+            }
+            // Hide the continue button
+            var continueButton = document.getElementById('continue-button');
+            if (continueButton) {
+                continueButton.style.display = 'none';
+            }
+            // Show the page content
+            var initialContent = document.getElementById('initial-content');
+            if (initialContent) {
+                initialContent.style.display = 'block';
+            }
+            var extraContent = document.getElementById('extra-content');
+            if (extraContent) {
+                extraContent.style.display = 'block';
             }
         }
 
