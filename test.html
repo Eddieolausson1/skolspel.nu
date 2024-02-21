@@ -7,8 +7,8 @@
     <!-- Cloudflare Turnstile API script -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
     <style>
-        /* Initially hide everything except the Turnstile container */
-        #initial-content, #extra-content {
+        /* Hide initial content with CSS */
+        .initially-hidden {
             display: none;
         }
     </style>
@@ -19,14 +19,14 @@
         <h1>Please wait while we test your security.</h1>
     </div>
 
-    <!-- Initial content to be hidden -->
-    <div id="initial-content">
+    <!-- Initial content to be hidden initially -->
+    <div id="initial-content" class="initially-hidden">
         <h2>Welcome to our website!</h2>
         <p>This is the initial content of the page.</p>
     </div>
 
-    <!-- Extra content to be hidden -->
-    <div id="extra-content">
+    <!-- Extra content to be hidden initially -->
+    <div id="extra-content" class="initially-hidden">
         <h2>Additional Content</h2>
         <p>This is some extra content that should be hidden initially.</p>
     </div>
@@ -38,17 +38,12 @@
             // Hide the initial content
             var initialContent = document.getElementById('initial-content');
             if (initialContent) {
-                initialContent.style.display = 'none';
+                initialContent.classList.remove('initially-hidden');
             }
             // Hide the extra content
             var extraContent = document.getElementById('extra-content');
             if (extraContent) {
-                extraContent.style.display = 'none';
-            }
-            // Display the Turnstile container
-            var challengeContainer = document.getElementById('turnstile-container');
-            if (challengeContainer) {
-                challengeContainer.style.display = 'block';
+                extraContent.classList.remove('initially-hidden');
             }
             // You can perform additional actions here, such as unlocking content or submitting a form
         }
