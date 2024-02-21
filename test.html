@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Page</title>
-    <style>
-        body {
-            text-align: center;
-            padding: 50px;
-        }
-    </style>
+    <title>Turnstile Widget Example</title>
+    <!-- Cloudflare Turnstile API script -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
 </head>
 <body>
-    <h1>Welcome to the Index Page</h1>
+    <!-- Container for the Turnstile widget -->
+    <div id="turnstile-container" class="cf-turnstile" data-sitekey="0x4AAAAAAAFW91L1-cQ3h4jR" data-callback="javascriptCallback"></div>
 
     <script>
-        // Retrieve the user's name from the query parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const userName = urlParams.get('userName');
-
-        // Display the user's name on the page
-        if (userName) {
-            document.body.innerHTML += '<p>Hello, ' + decodeURIComponent(userName) + '!</p>';
+        // JavaScript callback function called upon successful challenge completion
+        function javascriptCallback(token) {
+            console.log('Challenge Success', token);
+            // Hide the challenge container
+            var challengeContainer = document.getElementById('turnstile-container');
+            if (challengeContainer) {
+                challengeContainer.style.display = 'none';
+            }
+            // You can perform additional actions here, such as unlocking content or submitting a form
         }
+
+        // Initialize the Turnstile widget after the page has loaded
+        window.onloadTurnstileCallback = function () {
+            turnstile.render('#turnstile-container', {
+                sitekey: '0x4AAAAAAAFW91L1-cQ3h4jR', // Your Cloudflare site key
+                callback: javascriptCallback
+            });
+        };
     </script>
 </body>
 </html>
