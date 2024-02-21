@@ -7,8 +7,8 @@
     <!-- Cloudflare Turnstile API script -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
     <style>
-        /* Initially hide all content except the Turnstile challenge and the continue button */
-        .initially-hidden {
+        /* Initially hide the initial content */
+        #initial-content {
             display: none;
         }
     </style>
@@ -19,33 +19,27 @@
         <h1>Please wait while we test your security.</h1>
     </div>
 
-    <!-- Initial content to be hidden initially -->
-    <div id="initial-content" class="initially-hidden">
-        <h2>Welcome to our website!</h2>
-        <p>This is the initial content of the page.</p>
-    </div>
-
     <!-- Extra content to be hidden initially -->
-    <div id="extra-content" class="initially-hidden">
+    <div id="extra-content" style="display:none;">
         <!-- Continue button -->
         <button id="continue-button" onclick="showPageContent()">Continue</button>
+    </div>
+
+    <!-- Initial content -->
+    <div id="initial-content">
+        <h2>Welcome to our website!</h2>
+        <p>This is the initial content of the page.</p>
     </div>
 
     <script>
         // JavaScript callback function called upon successful challenge completion
         function javascriptCallback(token) {
             console.log('Challenge Success', token);
-            // Hide the initial content
-            var initialContent = document.getElementById('initial-content');
-            if (initialContent) {
-                initialContent.classList.remove('initially-hidden');
-            }
-            // Hide the extra content
+            // Show the extra content (continue button)
             var extraContent = document.getElementById('extra-content');
             if (extraContent) {
-                extraContent.classList.remove('initially-hidden');
+                extraContent.style.display = 'block';
             }
-            // You can perform additional actions here, such as unlocking content or submitting a form
         }
 
         // Function to show page content and hide challenge and continue button
@@ -60,14 +54,10 @@
             if (continueButton) {
                 continueButton.style.display = 'none';
             }
-            // Show the page content
+            // Show the initial content
             var initialContent = document.getElementById('initial-content');
             if (initialContent) {
                 initialContent.style.display = 'block';
-            }
-            var extraContent = document.getElementById('extra-content');
-            if (extraContent) {
-                extraContent.style.display = 'block';
             }
         }
 
